@@ -47,7 +47,6 @@ class FatTree : public Network {
 
   int _k;
   int _n;
-  int _t;
 
   
   void _ComputeSize( const Configuration& config );

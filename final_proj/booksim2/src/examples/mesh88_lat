@@ -37,8 +37,8 @@ n = 2;
 routing_function = dor;
 
 // Flow control
-num_vcs     = 8;
-vc_buf_size = 8;
+num_vcs     = 1;
+vc_buf_size = 64;
 wait_for_tail_credit = 1;
 
 // Router architecture
@@ -57,7 +57,7 @@ internal_speedup  = 1.0;
 
 
 // Traffic
-traffic = transpose;
+traffic = randperm;
 packet_size = 20;
 
 

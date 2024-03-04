@@ -71,9 +71,8 @@ void FatTree::_ComputeSize( const Configuration& config )
 
   _k = config.GetInt( "k" );
   _n = config.GetInt( "n" );
-  _t = config.GetInt( "t" );
    
-  gK = _k; gN = _n; gT = _t;
+  gK = _k; gN = _n;
   
   _nodes = powi( _k, _n );
 

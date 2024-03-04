@@ -63,15 +63,14 @@ num_vcs     = 4;
 priority = none;
 traffic       = uniform;
 
-injection_rate = 0.26;
+injection_rate = 0.6;
 packet_size = 1;
 injection_rate_uses_flits=1;
 
 topology = fattree;
 
 
-k  = 8;
+k  = 4;
 n  = 3;
-t = 4;
 
 watch_out=-;

@@ -287,7 +287,7 @@ void fattree_nca( const Router *r, const Flit *f,
     int router_id = r->GetID(); //routers are numbered with smallest at the top level
     int routers_per_level = powi(gK, gN-1);
     int pos = router_id%routers_per_level;
-    int router_depth  = router_id/ routers_per_level; //which levelrouter_depth
+    int router_depth  = router_id/ routers_per_level; //which level
     int routers_per_neighborhood = powi(gK,gN-router_depth-1);
     int router_neighborhood = pos/routers_per_neighborhood; //coverage of this tree
     int router_coverage = powi(gK, gN-router_depth);  //span of the tree from this router
@@ -309,47 +309,7 @@ void fattree_nca( const Router *r, const Flit *f,
     } else {
       //up ports are numbered last
       assert(in_channel<gK);//came from a up channel
-
-      //This is the up path -> we need to reduce the number of channels that we can route to
-      if(router_depth == 1){
-        //We have k channels available to choose from for each router which is encapsulated in the variable gK
-        //Need to taper hops, how can we do that?
-        //The network has n = 4 and k = 8
-        //At the last 3 levels -> we group 8 aggregation nodes and 8 edge nodes to 
-        //left or right side
-        int router_index_in_pod = (router_id%routers_per_level)/(routers_per_level/gT);
-        // will be 0 if gT is 1
-        out_port = RandomInt((gK/gT)-1);
-        // while (out_port == gK+1){
-        //   out_port = RandomInt(gK-1);
-        //   if (out_port == (router_index_in_pod)){
-        //     out_port = gK+1;
-        //   }
-        // }
-        if (gT == 2){
-          if (router_index_in_pod == 0){
-            out_port += 4;
-            // only send to right half of switches ports on left side and vice versa
-          }
-        }
-        if (gT == 4){
-          if (router_index_in_pod == 0){
-            out_port += 6;
-            // only send to right half of switches ports on left side and vice versa
-          }
-          if (router_index_in_pod == 1){
-            out_port += 4;
-            // only send to right half of switches ports on left side and vice versa
-          }
-          if (router_index_in_pod == 2){
-            out_port += 2;
-            // only send to right half of switches ports on left side and vice versa
-          }
-        }
-        out_port += gK;
-      }else{  //If we are not at router_depth=1 we can go ahead with standard routing scheme
-          out_port = gK+RandomInt(gK-1);
-      }
+      out_port = gK+RandomInt(gK-1);
     }
   }  
   outputs->Clear( );
@@ -416,78 +376,14 @@ void fattree_anca( const Router *r, const Flit *f,
     } else {
       //up ports are numbered last
       assert(in_channel<gK);//came from a up channel
-
-      int random1 = RandomInt((gK/gT)-1);
-      int random2 = RandomInt((gK/gT)-1);
-
-      if(router_depth == 1){
-        int router_index_in_pod = (router_id%routers_per_level)/(routers_per_level/gT);
-        // will be 0 if gT is 1
-        // while (out_port == gK+1){
-        //   out_port = RandomInt(gK-1);
-        //   if (out_port == (router_index_in_pod)){
-        //     out_port = gK+1;
-        //   }
-        // }
-        if (gT == 2){
-          if (router_index_in_pod == 0){
-            random1 += 4;
-            random2 += 4;
-            // only send to right half of switches ports on left side and vice versa
-          }
-        }
-        if (gT == 4){
-          if (router_index_in_pod == 0){
-            random1 += 6;
-            random2 += 6;
-            // only send to right half of switches ports on left side and vice versa
-          }
-          if (router_index_in_pod == 1){
-            random1 += 4;
-            random2 += 4;
-            // only send to right half of switches ports on left side and vice versa
-          }
-          if (router_index_in_pod == 2){
-            random1 += 2;
-            random2 += 2;
-            // only send to right half of switches ports on left side and vice versa
-          }
-        }
-        out_port = gK;
-
-        // int random1 = gK+1;
-        // while (random1 == gK+1){
-        //   random1 = RandomInt(gK-1);
-        //   if (random1 == (router_index_in_pod)){
-        //     random1 = gK+1;
-        //   }
-        // }
-
-        // int random2 = gK+1;
-        // while (random2 == gK+1){
-        //   random2 = RandomInt(gK-1);
-        //   if (random2 == (router_index_in_pod)){
-        //     random2 = gK+1;
-        //   }
-        // }
-
-        if (r->GetUsedCredit(out_port + random1) > r->GetUsedCredit(out_port + random2)){
-	          out_port = out_port + random2;
-        }else{
-	          out_port =  out_port + random1;
-        }
+      out_port = gK;
+      int random1 = RandomInt(gK-1); // Chose two ports out of the possible at random, compare loads, choose one.
+      int random2 = RandomInt(gK-1);
+      if (r->GetUsedCredit(out_port + random1) > r->GetUsedCredit(out_port + random2)){
+	out_port = out_port + random2;
       }else{
-        out_port = gK;
-        int random1 = RandomInt(gK-1); // Chose two ports out of the possible at random, compare loads, choose one.
-        int random2 = RandomInt(gK-1);
-        if (r->GetUsedCredit(out_port + random1) > r->GetUsedCredit(out_port + random2)){
-	          out_port = out_port + random2;
-        }else{
-	          out_port =  out_port + random1;
-        }
+	out_port =  out_port + random1;
       }
-      
-      
     }
   }  
   outputs->Clear( );
@@ -642,6 +538,37 @@ void xy_yx_mesh( const Router *r, const Flit *f,
 //=============================================================
 
 int dor_next_mesh( int cur, int dest, bool descending )
+{
+  if ( cur == dest ) {
+    return 2*gN;  // Eject
+  }
+
+  int dim_left;
+
+  if(descending) {
+    for ( dim_left = ( gN - 1 ); dim_left > 0; --dim_left ) {
+      if ( ( cur * gK / gNodes ) != ( dest * gK / gNodes ) ) { break; }
+      cur = (cur * gK) % gNodes; dest = (dest * gK) % gNodes;
+    }
+    cur = (cur * gK) / gNodes;
+    dest = (dest * gK) / gNodes;
+  } else {
+    for ( dim_left = 0; dim_left < ( gN - 1 ); ++dim_left ) {
+      if ( ( cur % gK ) != ( dest % gK ) ) { break; }
+      cur /= gK; dest /= gK;
+    }
+    cur %= gK;
+    dest %= gK;
+  }
+
+  if ( cur < dest ) {
+    return 2*dim_left;     // Right
+  } else {
+    return 2*dim_left + 1; // Left
+  }
+}
+
+int onion_next_mesh( int cur, int dest, bool descending )
 {
   if ( cur == dest ) {
     return 2*gN;  // Eject

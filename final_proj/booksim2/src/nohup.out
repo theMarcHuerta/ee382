@@ -1,0 +1,1430 @@
+BEGIN Configuration File: examples/dragonflyconfig_70
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = uniform; 
+
+injection_rate = 0.70;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_70.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_70
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 190.344
+	minimum = 14
+	maximum = 538
+Network latency average = 179.797
+	minimum = 14
+	maximum = 494
+Slowest packet = 34716
+Flit latency average = 170.221
+	minimum = 5
+	maximum = 485
+Slowest flit = 5914400
+Fragmentation average = 1.02399
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0699306
+	minimum = 0.0616 (at node 812)
+	maximum = 0.0784 (at node 381)
+Accepted packet rate average = 0.06866
+	minimum = 0.0602 (at node 426)
+	maximum = 0.0772 (at node 224)
+Injected flit rate average = 0.698991
+	minimum = 0.616 (at node 812)
+	maximum = 0.7835 (at node 381)
+Accepted flit rate average= 0.686952
+	minimum = 0.6023 (at node 426)
+	maximum = 0.772 (at node 224)
+Injected packet length average = 9.9955
+Accepted packet length average = 10.0051
+Total in-flight flits = 130455 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 190.935
+	minimum = 14
+	maximum = 563
+Network latency average = 180.391
+	minimum = 14
+	maximum = 536
+Slowest packet = 34716
+Flit latency average = 170.82
+	minimum = 5
+	maximum = 527
+Slowest flit = 14068730
+Fragmentation average = 1.01801
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0700188
+	minimum = 0.0648 (at node 589)
+	maximum = 0.07635 (at node 381)
+Accepted packet rate average = 0.0693813
+	minimum = 0.06365 (at node 1005)
+	maximum = 0.07495 (at node 364)
+Injected flit rate average = 0.700035
+	minimum = 0.648 (at node 589)
+	maximum = 0.76335 (at node 381)
+Accepted flit rate average= 0.693995
+	minimum = 0.63695 (at node 1005)
+	maximum = 0.74955 (at node 364)
+Injected packet length average = 9.99782
+Accepted packet length average = 10.0026
+Total in-flight flits = 130777 (0 measured)
+latency change    = 0.00309812
+throughput change = 0.0101488
+Class 0:
+Packet latency average = 191.383
+	minimum = 14
+	maximum = 602
+Network latency average = 180.819
+	minimum = 14
+	maximum = 573
+Slowest packet = 1769419
+Flit latency average = 171.247
+	minimum = 5
+	maximum = 564
+Slowest flit = 17817080
+Fragmentation average = 1.01553
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0701188
+	minimum = 0.0622 (at node 44)
+	maximum = 0.0788 (at node 203)
+Accepted packet rate average = 0.0701359
+	minimum = 0.0624 (at node 238)
+	maximum = 0.0795 (at node 1044)
+Injected flit rate average = 0.701181
+	minimum = 0.622 (at node 44)
+	maximum = 0.7879 (at node 203)
+Accepted flit rate average= 0.701356
+	minimum = 0.6252 (at node 238)
+	maximum = 0.7952 (at node 1044)
+Injected packet length average = 9.99989
+Accepted packet length average = 9.99996
+Total in-flight flits = 129003 (0 measured)
+latency change    = 0.00234254
+throughput change = 0.0104954
+Warmed up ...Time used is 30000 cycles
+Class 0:
+Packet latency average = 191.007
+	minimum = 14
+	maximum = 514
+Network latency average = 180.579
+	minimum = 14
+	maximum = 505
+Slowest packet = 2810913
+Flit latency average = 171.165
+	minimum = 5
+	maximum = 496
+Slowest flit = 28109130
+Fragmentation average = 1.01542
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0700201
+	minimum = 0.0613 (at node 52)
+	maximum = 0.0785 (at node 910)
+Accepted packet rate average = 0.0700064
+	minimum = 0.0624 (at node 309)
+	maximum = 0.0785 (at node 814)
+Injected flit rate average = 0.70017
+	minimum = 0.6128 (at node 52)
+	maximum = 0.7846 (at node 910)
+Accepted flit rate average= 0.700067
+	minimum = 0.6239 (at node 309)
+	maximum = 0.7849 (at node 814)
+Injected packet length average = 9.99956
+Accepted packet length average = 10
+Total in-flight flits = 130415 (130415 measured)
+latency change    = 0.00196795
+throughput change = 0.00184181
+Class 0:
+Packet latency average = 191.001
+	minimum = 14
+	maximum = 531
+Network latency average = 180.557
+	minimum = 14
+	maximum = 511
+Slowest packet = 2810913
+Flit latency average = 171.065
+	minimum = 5
+	maximum = 502
+Slowest flit = 33930030
+Fragmentation average = 1.01691
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0699772
+	minimum = 0.0643 (at node 597)
+	maximum = 0.0759 (at node 875)
+Accepted packet rate average = 0.0699758
+	minimum = 0.06445 (at node 858)
+	maximum = 0.0766 (at node 129)
+Injected flit rate average = 0.699773
+	minimum = 0.64345 (at node 597)
+	maximum = 0.759 (at node 875)
+Accepted flit rate average= 0.699752
+	minimum = 0.64465 (at node 858)
+	maximum = 0.7663 (at node 129)
+Injected packet length average = 10
+Accepted packet length average = 9.99991
+Total in-flight flits = 129431 (129431 measured)
+latency change    = 3.37229e-05
+throughput change = 0.000450241
+Class 0:
+Packet latency average = 191.137
+	minimum = 14
+	maximum = 540
+Network latency average = 180.655
+	minimum = 14
+	maximum = 511
+Slowest packet = 2810913
+Flit latency average = 171.136
+	minimum = 5
+	maximum = 502
+Slowest flit = 33930030
+Fragmentation average = 1.01696
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0700041
+	minimum = 0.0649 (at node 1043)
+	maximum = 0.0747333 (at node 18)
+Accepted packet rate average = 0.0700007
+	minimum = 0.0656667 (at node 259)
+	maximum = 0.0756333 (at node 816)
+Injected flit rate average = 0.70004
+	minimum = 0.649067 (at node 1043)
+	maximum = 0.747467 (at node 18)
+Accepted flit rate average= 0.700009
+	minimum = 0.6565 (at node 259)
+	maximum = 0.756233 (at node 816)
+Injected packet length average = 9.99999
+Accepted packet length average = 10
+Total in-flight flits = 130021 (130021 measured)
+latency change    = 0.000711637
+throughput change = 0.000366563
+Draining all recorded packets ...
+Draining remaining packets ...
+Time taken is 60795 cycles
+====== Overall Traffic Statistics ======
+====== Traffic class 0 ======
+Packet latency average = 191.192 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 540 (1 samples)
+Network latency average = 180.708 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 511 (1 samples)
+Flit latency average = 171.164 (1 samples)
+	minimum = 5 (1 samples)
+	maximum = 502 (1 samples)
+Fragmentation average = 1.01616 (1 samples)
+	minimum = 0 (1 samples)
+	maximum = 28 (1 samples)
+Injected packet rate average = 0.0700041 (1 samples)
+	minimum = 0.0649 (1 samples)
+	maximum = 0.0747333 (1 samples)
+Accepted packet rate average = 0.0700007 (1 samples)
+	minimum = 0.0656667 (1 samples)
+	maximum = 0.0756333 (1 samples)
+Injected flit rate average = 0.70004 (1 samples)
+	minimum = 0.649067 (1 samples)
+	maximum = 0.747467 (1 samples)
+Accepted flit rate average = 0.700009 (1 samples)
+	minimum = 0.6565 (1 samples)
+	maximum = 0.756233 (1 samples)
+Injected packet size average = 9.99999 (1 samples)
+Accepted packet size average = 10 (1 samples)
+Hops average = 3.6943 (1 samples)
+Total run time 1010.52
+BEGIN Configuration File: examples/dragonflyconfig_75
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = uniform; 
+
+injection_rate = 0.75;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_75.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_75
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 206.666
+	minimum = 14
+	maximum = 759
+Network latency average = 193.324
+	minimum = 14
+	maximum = 732
+Slowest packet = 606876
+Flit latency average = 183.797
+	minimum = 5
+	maximum = 723
+Slowest flit = 6203220
+Fragmentation average = 0.939323
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0748931
+	minimum = 0.0664 (at node 266)
+	maximum = 0.0837 (at node 403)
+Accepted packet rate average = 0.0734356
+	minimum = 0.0663 (at node 264)
+	maximum = 0.0815 (at node 329)
+Injected flit rate average = 0.748582
+	minimum = 0.6639 (at node 266)
+	maximum = 0.837 (at node 403)
+Accepted flit rate average= 0.734747
+	minimum = 0.663 (at node 264)
+	maximum = 0.815 (at node 329)
+Injected packet length average = 9.99535
+Accepted packet length average = 10.0053
+Total in-flight flits = 149778 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 207.725
+	minimum = 14
+	maximum = 759
+Network latency average = 194.219
+	minimum = 14
+	maximum = 732
+Slowest packet = 606876
+Flit latency average = 184.698
+	minimum = 5
+	maximum = 723
+Slowest flit = 6203220
+Fragmentation average = 0.93344
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0749957
+	minimum = 0.06905 (at node 826)
+	maximum = 0.082 (at node 326)
+Accepted packet rate average = 0.0742632
+	minimum = 0.06895 (at node 742)
+	maximum = 0.0802 (at node 651)
+Injected flit rate average = 0.749789
+	minimum = 0.6905 (at node 826)
+	maximum = 0.8197 (at node 326)
+Accepted flit rate average= 0.742825
+	minimum = 0.6895 (at node 742)
+	maximum = 0.8022 (at node 651)
+Injected packet length average = 9.99776
+Accepted packet length average = 10.0026
+Total in-flight flits = 150643 (0 measured)
+latency change    = 0.00509887
+throughput change = 0.0108738
+Class 0:
+Packet latency average = 208.234
+	minimum = 14
+	maximum = 688
+Network latency average = 194.729
+	minimum = 14
+	maximum = 666
+Slowest packet = 2202297
+Flit latency average = 185.214
+	minimum = 5
+	maximum = 657
+Slowest flit = 22260970
+Fragmentation average = 0.926894
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0750897
+	minimum = 0.0657 (at node 717)
+	maximum = 0.0822 (at node 724)
+Accepted packet rate average = 0.0750941
+	minimum = 0.0649 (at node 397)
+	maximum = 0.0836 (at node 777)
+Injected flit rate average = 0.750884
+	minimum = 0.6563 (at node 717)
+	maximum = 0.8217 (at node 724)
+Accepted flit rate average= 0.750929
+	minimum = 0.6495 (at node 397)
+	maximum = 0.836 (at node 777)
+Injected packet length average = 9.99983
+Accepted packet length average = 9.99984
+Total in-flight flits = 150300 (0 measured)
+latency change    = 0.00244702
+throughput change = 0.0107928
+Warmed up ...Time used is 30000 cycles
+Class 0:
+Packet latency average = 207.919
+	minimum = 14
+	maximum = 644
+Network latency average = 194.317
+	minimum = 14
+	maximum = 591
+Slowest packet = 2585771
+Flit latency average = 185.061
+	minimum = 5
+	maximum = 582
+Slowest flit = 25857710
+Fragmentation average = 0.931654
+	minimum = 0
+	maximum = 26
+Injected packet rate average = 0.0750105
+	minimum = 0.0677 (at node 440)
+	maximum = 0.0822 (at node 950)
+Accepted packet rate average = 0.0750075
+	minimum = 0.0668 (at node 603)
+	maximum = 0.0851 (at node 471)
+Injected flit rate average = 0.750117
+	minimum = 0.677 (at node 440)
+	maximum = 0.8226 (at node 950)
+Accepted flit rate average= 0.750073
+	minimum = 0.6672 (at node 603)
+	maximum = 0.851 (at node 471)
+Injected packet length average = 10.0002
+Accepted packet length average = 9.99997
+Total in-flight flits = 150643 (150643 measured)
+latency change    = 0.00151882
+throughput change = 0.00114206
+Class 0:
+Packet latency average = 207.88
+	minimum = 14
+	maximum = 810
+Network latency average = 194.337
+	minimum = 14
+	maximum = 764
+Slowest packet = 3405046
+Flit latency average = 184.951
+	minimum = 5
+	maximum = 755
+Slowest flit = 34050460
+Fragmentation average = 0.928886
+	minimum = 0
+	maximum = 26
+Injected packet rate average = 0.0749601
+	minimum = 0.0687 (at node 382)
+	maximum = 0.08115 (at node 435)
+Accepted packet rate average = 0.0749612
+	minimum = 0.0658 (at node 1028)
+	maximum = 0.08185 (at node 471)
+Injected flit rate average = 0.749608
+	minimum = 0.6869 (at node 382)
+	maximum = 0.81115 (at node 435)
+Accepted flit rate average= 0.749614
+	minimum = 0.65755 (at node 1028)
+	maximum = 0.81885 (at node 471)
+Injected packet length average = 10.0001
+Accepted packet length average = 10
+Total in-flight flits = 150018 (150018 measured)
+latency change    = 0.000184385
+throughput change = 0.000611552
+Class 0:
+Packet latency average = 208.022
+	minimum = 14
+	maximum = 810
+Network latency average = 194.487
+	minimum = 14
+	maximum = 764
+Slowest packet = 3405046
+Flit latency average = 185.057
+	minimum = 5
+	maximum = 755
+Slowest flit = 34050460
+Fragmentation average = 0.928649
+	minimum = 0
+	maximum = 26
+Injected packet rate average = 0.0749864
+	minimum = 0.0706333 (at node 1004)
+	maximum = 0.0807 (at node 892)
+Accepted packet rate average = 0.0749876
+	minimum = 0.0702 (at node 1028)
+	maximum = 0.0797333 (at node 837)
+Injected flit rate average = 0.749867
+	minimum = 0.706633 (at node 1004)
+	maximum = 0.807 (at node 892)
+Accepted flit rate average= 0.749879
+	minimum = 0.7017 (at node 1028)
+	maximum = 0.797367 (at node 837)
+Injected packet length average = 10
+Accepted packet length average = 10
+Total in-flight flits = 149813 (149813 measured)
+latency change    = 0.00068028
+throughput change = 0.00035355
+Draining all recorded packets ...
+Draining remaining packets ...
+Time taken is 60853 cycles
+====== Overall Traffic Statistics ======
+====== Traffic class 0 ======
+Packet latency average = 208.099 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 810 (1 samples)
+Network latency average = 194.557 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 764 (1 samples)
+Flit latency average = 185.086 (1 samples)
+	minimum = 5 (1 samples)
+	maximum = 755 (1 samples)
+Fragmentation average = 0.927699 (1 samples)
+	minimum = 0 (1 samples)
+	maximum = 26 (1 samples)
+Injected packet rate average = 0.0749864 (1 samples)
+	minimum = 0.0706333 (1 samples)
+	maximum = 0.0807 (1 samples)
+Accepted packet rate average = 0.0749876 (1 samples)
+	minimum = 0.0702 (1 samples)
+	maximum = 0.0797333 (1 samples)
+Injected flit rate average = 0.749867 (1 samples)
+	minimum = 0.706633 (1 samples)
+	maximum = 0.807 (1 samples)
+Accepted flit rate average = 0.749879 (1 samples)
+	minimum = 0.7017 (1 samples)
+	maximum = 0.797367 (1 samples)
+Injected packet size average = 10 (1 samples)
+Accepted packet size average = 10 (1 samples)
+Hops average = 3.69299 (1 samples)
+Total run time 1060.59
+BEGIN Configuration File: examples/dragonflyconfig_80
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = uniform; 
+
+injection_rate = 0.80;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_80.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_80
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 231.883
+	minimum = 14
+	maximum = 794
+Network latency average = 213.893
+	minimum = 14
+	maximum = 739
+Slowest packet = 250709
+Flit latency average = 204.426
+	minimum = 5
+	maximum = 730
+Slowest flit = 2507090
+Fragmentation average = 0.844563
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0798587
+	minimum = 0.072 (at node 365)
+	maximum = 0.0887 (at node 845)
+Accepted packet rate average = 0.0781132
+	minimum = 0.0686 (at node 430)
+	maximum = 0.0869 (at node 455)
+Injected flit rate average = 0.798222
+	minimum = 0.7199 (at node 365)
+	maximum = 0.8862 (at node 845)
+Accepted flit rate average= 0.781527
+	minimum = 0.6863 (at node 430)
+	maximum = 0.8696 (at node 455)
+Injected packet length average = 9.99543
+Accepted packet length average = 10.0051
+Total in-flight flits = 180160 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 233.97
+	minimum = 14
+	maximum = 944
+Network latency average = 216
+	minimum = 14
+	maximum = 937
+Slowest packet = 970374
+Flit latency average = 206.54
+	minimum = 5
+	maximum = 928
+Slowest flit = 9703740
+Fragmentation average = 0.833107
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0799726
+	minimum = 0.07255 (at node 723)
+	maximum = 0.08715 (at node 790)
+Accepted packet rate average = 0.0790964
+	minimum = 0.0728 (at node 430)
+	maximum = 0.08705 (at node 760)
+Injected flit rate average = 0.799537
+	minimum = 0.7253 (at node 723)
+	maximum = 0.87125 (at node 790)
+Accepted flit rate average= 0.791171
+	minimum = 0.7282 (at node 430)
+	maximum = 0.8705 (at node 760)
+Injected packet length average = 9.99763
+Accepted packet length average = 10.0026
+Total in-flight flits = 180681 (0 measured)
+latency change    = 0.00892046
+throughput change = 0.0121906
+Class 0:
+Packet latency average = 235.999
+	minimum = 14
+	maximum = 1027
+Network latency average = 217.916
+	minimum = 14
+	maximum = 1002
+Slowest packet = 2098741
+Flit latency average = 208.462
+	minimum = 5
+	maximum = 993
+Slowest flit = 20987410
+Fragmentation average = 0.821137
+	minimum = 0
+	maximum = 28
+Injected packet rate average = 0.0800766
+	minimum = 0.0723 (at node 434)
+	maximum = 0.088 (at node 1033)
+Accepted packet rate average = 0.0800914
+	minimum = 0.0719 (at node 550)
+	maximum = 0.0906 (at node 385)
+Injected flit rate average = 0.800786
+	minimum = 0.7237 (at node 434)
+	maximum = 0.8804 (at node 1033)
+Accepted flit rate average= 0.800902
+	minimum = 0.7195 (at node 899)
+	maximum = 0.9062 (at node 385)
+Injected packet length average = 10.0002
+Accepted packet length average = 9.99985
+Total in-flight flits = 179246 (0 measured)
+latency change    = 0.00859516
+throughput change = 0.0121496
+Warmed up ...Time used is 30000 cycles
+Class 0:
+Packet latency average = 235.3
+	minimum = 14
+	maximum = 957
+Network latency average = 217.121
+	minimum = 14
+	maximum = 944
+Slowest packet = 2963224
+Flit latency average = 208.018
+	minimum = 5
+	maximum = 935
+Slowest flit = 29632240
+Fragmentation average = 0.83234
+	minimum = 0
+	maximum = 25
+Injected packet rate average = 0.0799988
+	minimum = 0.0721 (at node 197)
+	maximum = 0.089 (at node 161)
+Accepted packet rate average = 0.0800047
+	minimum = 0.0715 (at node 574)
+	maximum = 0.0892 (at node 655)
+Injected flit rate average = 0.799982
+	minimum = 0.7218 (at node 197)
+	maximum = 0.8891 (at node 161)
+Accepted flit rate average= 0.800042
+	minimum = 0.7145 (at node 574)
+	maximum = 0.8921 (at node 655)
+Injected packet length average = 9.99992
+Accepted packet length average = 9.99993
+Total in-flight flits = 178674 (178674 measured)
+latency change    = 0.00296812
+throughput change = 0.00107511
+Class 0:
+Packet latency average = 234.639
+	minimum = 14
+	maximum = 957
+Network latency average = 216.598
+	minimum = 14
+	maximum = 944
+Slowest packet = 2963224
+Flit latency average = 207.323
+	minimum = 5
+	maximum = 935
+Slowest flit = 29632240
+Fragmentation average = 0.831236
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0799582
+	minimum = 0.0735 (at node 986)
+	maximum = 0.0861 (at node 231)
+Accepted packet rate average = 0.0799684
+	minimum = 0.07425 (at node 804)
+	maximum = 0.0876 (at node 466)
+Injected flit rate average = 0.799577
+	minimum = 0.73505 (at node 986)
+	maximum = 0.8609 (at node 231)
+Accepted flit rate average= 0.799685
+	minimum = 0.74205 (at node 804)
+	maximum = 0.87605 (at node 466)
+Injected packet length average = 9.99994
+Accepted packet length average = 10
+Total in-flight flits = 177076 (177076 measured)
+latency change    = 0.00281935
+throughput change = 0.000446672
+Class 0:
+Packet latency average = 234.956
+	minimum = 14
+	maximum = 1074
+Network latency average = 216.9
+	minimum = 14
+	maximum = 965
+Slowest packet = 4663768
+Flit latency average = 207.564
+	minimum = 5
+	maximum = 956
+Slowest flit = 46637680
+Fragmentation average = 0.82707
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0799932
+	minimum = 0.0743667 (at node 1045)
+	maximum = 0.0847 (at node 231)
+Accepted packet rate average = 0.0799928
+	minimum = 0.0749667 (at node 645)
+	maximum = 0.0853 (at node 417)
+Injected flit rate average = 0.79993
+	minimum = 0.743433 (at node 1045)
+	maximum = 0.846733 (at node 231)
+Accepted flit rate average= 0.79993
+	minimum = 0.749433 (at node 645)
+	maximum = 0.853033 (at node 417)
+Injected packet length average = 9.99997
+Accepted packet length average = 10
+Total in-flight flits = 179306 (179306 measured)
+latency change    = 0.00134973
+throughput change = 0.000307003
+Draining all recorded packets ...
+Draining remaining packets ...
+Time taken is 61033 cycles
+====== Overall Traffic Statistics ======
+====== Traffic class 0 ======
+Packet latency average = 235.104 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 1074 (1 samples)
+Network latency average = 217.036 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 965 (1 samples)
+Flit latency average = 207.654 (1 samples)
+	minimum = 5 (1 samples)
+	maximum = 956 (1 samples)
+Fragmentation average = 0.825995 (1 samples)
+	minimum = 0 (1 samples)
+	maximum = 27 (1 samples)
+Injected packet rate average = 0.0799932 (1 samples)
+	minimum = 0.0743667 (1 samples)
+	maximum = 0.0847 (1 samples)
+Accepted packet rate average = 0.0799928 (1 samples)
+	minimum = 0.0749667 (1 samples)
+	maximum = 0.0853 (1 samples)
+Injected flit rate average = 0.79993 (1 samples)
+	minimum = 0.743433 (1 samples)
+	maximum = 0.846733 (1 samples)
+Accepted flit rate average = 0.79993 (1 samples)
+	minimum = 0.749433 (1 samples)
+	maximum = 0.853033 (1 samples)
+Injected packet size average = 9.99997 (1 samples)
+Accepted packet size average = 10 (1 samples)
+Hops average = 3.693 (1 samples)
+Total run time 1143.11
+BEGIN Configuration File: examples/dragonflyconfig_85
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = uniform; 
+
+injection_rate = 0.85;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_85.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_85
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 282.296
+	minimum = 14
+	maximum = 1619
+Network latency average = 257.035
+	minimum = 14
+	maximum = 1600
+Slowest packet = 607748
+Flit latency average = 247.628
+	minimum = 5
+	maximum = 1591
+Slowest flit = 6077480
+Fragmentation average = 0.752887
+	minimum = 0
+	maximum = 26
+Injected packet rate average = 0.0847676
+	minimum = 0.0767 (at node 270)
+	maximum = 0.0941 (at node 878)
+Accepted packet rate average = 0.0824233
+	minimum = 0.074 (at node 808)
+	maximum = 0.0937 (at node 25)
+Injected flit rate average = 0.847274
+	minimum = 0.7661 (at node 270)
+	maximum = 0.9406 (at node 878)
+Accepted flit rate average= 0.82466
+	minimum = 0.7404 (at node 808)
+	maximum = 0.9372 (at node 25)
+Injected packet length average = 9.99525
+Accepted packet length average = 10.0052
+Total in-flight flits = 243054 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 288.989
+	minimum = 14
+	maximum = 1872
+Network latency average = 263.476
+	minimum = 14
+	maximum = 1709
+Slowest packet = 1040544
+Flit latency average = 254.075
+	minimum = 5
+	maximum = 1700
+Slowest flit = 10405440
+Fragmentation average = 0.732481
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.084917
+	minimum = 0.07915 (at node 334)
+	maximum = 0.09155 (at node 452)
+Accepted packet rate average = 0.0837771
+	minimum = 0.07685 (at node 400)
+	maximum = 0.09085 (at node 748)
+Injected flit rate average = 0.848981
+	minimum = 0.7912 (at node 334)
+	maximum = 0.9155 (at node 452)
+Accepted flit rate average= 0.837986
+	minimum = 0.7688 (at node 400)
+	maximum = 0.9085 (at node 748)
+Injected packet length average = 9.99778
+Accepted packet length average = 10.0026
+Total in-flight flits = 236195 (0 measured)
+latency change    = 0.0231597
+throughput change = 0.0159029
+Class 0:
+Packet latency average = 293.081
+	minimum = 14
+	maximum = 1996
+Network latency average = 266.945
+	minimum = 14
+	maximum = 1709
+Slowest packet = 1698719
+Flit latency average = 257.553
+	minimum = 5
+	maximum = 1700
+Slowest flit = 23138150
+Fragmentation average = 0.711012
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0850731
+	minimum = 0.0739 (at node 990)
+	maximum = 0.0971 (at node 584)
+Accepted packet rate average = 0.0851393
+	minimum = 0.074 (at node 543)
+	maximum = 0.0941 (at node 754)
+Injected flit rate average = 0.850712
+	minimum = 0.7387 (at node 990)
+	maximum = 0.9713 (at node 584)
+Accepted flit rate average= 0.851365
+	minimum = 0.7405 (at node 543)
+	maximum = 0.9415 (at node 889)
+Injected packet length average = 9.99977
+Accepted packet length average = 9.99967
+Total in-flight flits = 229498 (0 measured)
+latency change    = 0.0139617
+throughput change = 0.015715
+Warmed up ...Time used is 30000 cycles
+Class 0:
+Packet latency average = 289.585
+	minimum = 14
+	maximum = 1658
+Network latency average = 263.323
+	minimum = 14
+	maximum = 1658
+Slowest packet = 3121275
+Flit latency average = 254.784
+	minimum = 5
+	maximum = 1649
+Slowest flit = 31212750
+Fragmentation average = 0.721001
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0850062
+	minimum = 0.0753 (at node 279)
+	maximum = 0.0953 (at node 74)
+Accepted packet rate average = 0.0849918
+	minimum = 0.0771 (at node 98)
+	maximum = 0.094 (at node 770)
+Injected flit rate average = 0.85009
+	minimum = 0.7536 (at node 279)
+	maximum = 0.9524 (at node 74)
+Accepted flit rate average= 0.849918
+	minimum = 0.7726 (at node 98)
+	maximum = 0.9403 (at node 770)
+Injected packet length average = 10.0003
+Accepted packet length average = 10
+Total in-flight flits = 231024 (231024 measured)
+latency change    = 0.0120718
+throughput change = 0.00170282
+Class 0:
+Packet latency average = 288.998
+	minimum = 14
+	maximum = 1662
+Network latency average = 263.193
+	minimum = 14
+	maximum = 1662
+Slowest packet = 3982947
+Flit latency average = 254.232
+	minimum = 5
+	maximum = 1653
+Slowest flit = 39829470
+Fragmentation average = 0.719454
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0849563
+	minimum = 0.07895 (at node 527)
+	maximum = 0.0926 (at node 749)
+Accepted packet rate average = 0.0849358
+	minimum = 0.07865 (at node 492)
+	maximum = 0.09155 (at node 770)
+Injected flit rate average = 0.849571
+	minimum = 0.78955 (at node 527)
+	maximum = 0.9262 (at node 749)
+Accepted flit rate average= 0.84937
+	minimum = 0.7867 (at node 492)
+	maximum = 0.91555 (at node 770)
+Injected packet length average = 10.0001
+Accepted packet length average = 10.0001
+Total in-flight flits = 233577 (233577 measured)
+latency change    = 0.00202926
+throughput change = 0.000644807
+Class 0:
+Packet latency average = 290.532
+	minimum = 14
+	maximum = 1662
+Network latency average = 264.646
+	minimum = 14
+	maximum = 1662
+Slowest packet = 3982947
+Flit latency average = 255.528
+	minimum = 5
+	maximum = 1653
+Slowest flit = 39829470
+Fragmentation average = 0.716464
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0849998
+	minimum = 0.0793 (at node 597)
+	maximum = 0.0898 (at node 87)
+Accepted packet rate average = 0.0849825
+	minimum = 0.0794667 (at node 492)
+	maximum = 0.0903333 (at node 770)
+Injected flit rate average = 0.850001
+	minimum = 0.793167 (at node 597)
+	maximum = 0.898133 (at node 87)
+Accepted flit rate average= 0.849834
+	minimum = 0.794867 (at node 492)
+	maximum = 0.903367 (at node 770)
+Injected packet length average = 10
+Accepted packet length average = 10.0001
+Total in-flight flits = 234699 (234699 measured)
+latency change    = 0.00527929
+throughput change = 0.000545171
+Draining all recorded packets ...
+Class 0:
+Remaining flits: 53558929 53726686 53726687 53726688 53726689 53753420 53753421 53753422 53753423 53753424 [...] (238026 flits)
+Measured flits: 53558929 53726686 53726687 53726688 53726689 53753420 53753421 53753422 53753423 53753424 [...] (108 flits)
+Draining remaining packets ...
+Time taken is 61865 cycles
+====== Overall Traffic Statistics ======
+====== Traffic class 0 ======
+Packet latency average = 290.95 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 1662 (1 samples)
+Network latency average = 265.023 (1 samples)
+	minimum = 14 (1 samples)
+	maximum = 1662 (1 samples)
+Flit latency average = 255.957 (1 samples)
+	minimum = 5 (1 samples)
+	maximum = 1653 (1 samples)
+Fragmentation average = 0.715378 (1 samples)
+	minimum = 0 (1 samples)
+	maximum = 27 (1 samples)
+Injected packet rate average = 0.0849998 (1 samples)
+	minimum = 0.0793 (1 samples)
+	maximum = 0.0898 (1 samples)
+Accepted packet rate average = 0.0849825 (1 samples)
+	minimum = 0.0794667 (1 samples)
+	maximum = 0.0903333 (1 samples)
+Injected flit rate average = 0.850001 (1 samples)
+	minimum = 0.793167 (1 samples)
+	maximum = 0.898133 (1 samples)
+Accepted flit rate average = 0.849834 (1 samples)
+	minimum = 0.794867 (1 samples)
+	maximum = 0.903367 (1 samples)
+Injected packet size average = 10 (1 samples)
+Accepted packet size average = 10.0001 (1 samples)
+Hops average = 3.69262 (1 samples)
+Total run time 1383.05
+BEGIN Configuration File: examples/dragonflyconfig_90
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = uniform; 
+
+injection_rate = 0.90;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_90.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_90
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 395.101
+	minimum = 14
+	maximum = 2311
+Network latency average = 350.468
+	minimum = 14
+	maximum = 2122
+Slowest packet = 263358
+Flit latency average = 341.114
+	minimum = 5
+	maximum = 2113
+Slowest flit = 6113810
+Fragmentation average = 0.670137
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.089265
+	minimum = 0.0803 (at node 43)
+	maximum = 0.099 (at node 217)
+Accepted packet rate average = 0.0854187
+	minimum = 0.077 (at node 752)
+	maximum = 0.0933 (at node 367)
+Injected flit rate average = 0.892254
+	minimum = 0.8028 (at node 43)
+	maximum = 0.9892 (at node 217)
+Accepted flit rate average= 0.854614
+	minimum = 0.7709 (at node 752)
+	maximum = 0.933 (at node 367)
+Injected packet length average = 9.99556
+Accepted packet length average = 10.005
+Total in-flight flits = 401657 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 498.515
+	minimum = 14
+	maximum = 3503
+Network latency average = 416.906
+	minimum = 14
+	maximum = 2455
+Slowest packet = 263358
+Flit latency average = 407.493
+	minimum = 5
+	maximum = 2446
+Slowest flit = 14820910
+Fragmentation average = 0.647401
+	minimum = 0
+	maximum = 27
+Injected packet rate average = 0.0891464
+	minimum = 0.08065 (at node 468)
+	maximum = 0.09765 (at node 217)
+Accepted packet rate average = 0.0868549
+	minimum = 0.08015 (at node 752)
+	maximum = 0.09395 (at node 139)
+Injected flit rate average = 0.891254
+	minimum = 0.8063 (at node 468)
+	maximum = 0.97615 (at node 217)
+Accepted flit rate average= 0.868769
+	minimum = 0.80175 (at node 752)
+	maximum = 0.9397 (at node 139)
+Injected packet length average = 9.99763
+Accepted packet length average = 10.0025
+Total in-flight flits = 479330 (0 measured)
+latency change    = 0.207445
+throughput change = 0.0162932
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 453.215

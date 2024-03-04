@@ -1,0 +1,2413 @@
+BEGIN Configuration File: examples/dragonflyconfig_1
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.01;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_1tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_1
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 2284.72
+	minimum = 22
+	maximum = 8341
+Network latency average = 2284.69
+	minimum = 22
+	maximum = 8341
+Slowest packet = 1438
+Flit latency average = 2276.79
+	minimum = 5
+	maximum = 8332
+Slowest flit = 14380
+Fragmentation average = 1.24665
+	minimum = 0
+	maximum = 25
+Injected packet rate average = 0.00100303
+	minimum = 0.0002 (at node 646)
+	maximum = 0.0021 (at node 222)
+Accepted packet rate average = 0.000360511
+	minimum = 0 (at node 4)
+	maximum = 0.0987 (at node 0)
+Injected flit rate average = 0.0100272
+	minimum = 0.002 (at node 646)
+	maximum = 0.021 (at node 222)
+Accepted flit rate average= 0.00360653
+	minimum = 0 (at node 4)
+	maximum = 0.9873 (at node 0)
+Injected packet length average = 9.99688
+Accepted packet length average = 10.0039
+Total in-flight flits = 67835 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 10.2255
+BEGIN Configuration File: examples/dragonflyconfig_5
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.05;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_5tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_5
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 2629.58
+	minimum = 14
+	maximum = 9757
+Network latency average = 2629.39
+	minimum = 14
+	maximum = 9757
+Slowest packet = 990
+Flit latency average = 2618.53
+	minimum = 5
+	maximum = 9748
+Slowest flit = 9900
+Fragmentation average = 4.23211
+	minimum = 0
+	maximum = 61
+Injected packet rate average = 0.00486364
+	minimum = 0.0027 (at node 23)
+	maximum = 0.0064 (at node 563)
+Accepted packet rate average = 0.00036392
+	minimum = 0 (at node 4)
+	maximum = 0.0991 (at node 2)
+Injected flit rate average = 0.048504
+	minimum = 0.027 (at node 23)
+	maximum = 0.0632 (at node 563)
+Accepted flit rate average= 0.00364034
+	minimum = 0 (at node 4)
+	maximum = 0.9921 (at node 2)
+Injected packet length average = 9.97278
+Accepted packet length average = 10.0031
+Total in-flight flits = 475158 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 25.5371
+BEGIN Configuration File: examples/dragonflyconfig_10
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.10;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_10tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_10
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3277.14
+	minimum = 14
+	maximum = 9907
+Network latency average = 3276.72
+	minimum = 14
+	maximum = 9907
+Slowest packet = 821
+Flit latency average = 3265.91
+	minimum = 5
+	maximum = 9898
+Slowest flit = 8219
+Fragmentation average = 5.46353
+	minimum = 0
+	maximum = 60
+Injected packet rate average = 0.00562689
+	minimum = 0.004 (at node 919)
+	maximum = 0.0115 (at node 27)
+Accepted packet rate average = 0.000376515
+	minimum = 0 (at node 4)
+	maximum = 0.0997 (at node 3)
+Injected flit rate average = 0.0558396
+	minimum = 0.0396 (at node 919)
+	maximum = 0.1146 (at node 27)
+Accepted flit rate average= 0.00376742
+	minimum = 0 (at node 4)
+	maximum = 0.9973 (at node 3)
+Injected packet length average = 9.9237
+Accepted packet length average = 10.006
+Total in-flight flits = 554416 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.8583
+BEGIN Configuration File: examples/dragonflyconfig_15
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.15;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_15tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_15
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3570.44
+	minimum = 14
+	maximum = 9945
+Network latency average = 3569.78
+	minimum = 14
+	maximum = 9945
+Slowest packet = 758
+Flit latency average = 3559.63
+	minimum = 5
+	maximum = 9936
+Slowest flit = 7580
+Fragmentation average = 5.86285
+	minimum = 0
+	maximum = 55
+Injected packet rate average = 0.0056517
+	minimum = 0.0039 (at node 699)
+	maximum = 0.0156 (at node 0)
+Accepted packet rate average = 0.000376989
+	minimum = 0 (at node 4)
+	maximum = 0.0997 (at node 1)
+Injected flit rate average = 0.056083
+	minimum = 0.0386 (at node 699)
+	maximum = 0.156 (at node 0)
+Accepted flit rate average= 0.00377273
+	minimum = 0 (at node 4)
+	maximum = 0.9982 (at node 1)
+Injected packet length average = 9.92321
+Accepted packet length average = 10.0075
+Total in-flight flits = 556980 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 30.7514
+BEGIN Configuration File: examples/dragonflyconfig_20
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.20;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_20tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_20
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3693.75
+	minimum = 14
+	maximum = 9955
+Network latency average = 3692.52
+	minimum = 14
+	maximum = 9955
+Slowest packet = 943
+Flit latency average = 3682.02
+	minimum = 5
+	maximum = 9966
+Slowest flit = 6500
+Fragmentation average = 6.73445
+	minimum = 0
+	maximum = 101
+Injected packet rate average = 0.00566837
+	minimum = 0.0039 (at node 873)
+	maximum = 0.0216 (at node 1)
+Accepted packet rate average = 0.000377652
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 1)
+Injected flit rate average = 0.0562476
+	minimum = 0.0386 (at node 873)
+	maximum = 0.216 (at node 1)
+Accepted flit rate average= 0.00377803
+	minimum = 0 (at node 4)
+	maximum = 0.9982 (at node 1)
+Injected packet length average = 9.92307
+Accepted packet length average = 10.004
+Total in-flight flits = 558684 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 31.1694
+BEGIN Configuration File: examples/dragonflyconfig_25
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.25;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_25tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_25
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3805.42
+	minimum = 14
+	maximum = 9914
+Network latency average = 3793.49
+	minimum = 14
+	maximum = 9914
+Slowest packet = 451
+Flit latency average = 3784.46
+	minimum = 5
+	maximum = 9905
+Slowest flit = 4518
+Fragmentation average = 6.461
+	minimum = 0
+	maximum = 63
+Injected packet rate average = 0.00568324
+	minimum = 0.0039 (at node 336)
+	maximum = 0.025 (at node 0)
+Accepted packet rate average = 0.000377557
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 0)
+Injected flit rate average = 0.056395
+	minimum = 0.0386 (at node 336)
+	maximum = 0.2496 (at node 0)
+Accepted flit rate average= 0.00377822
+	minimum = 0 (at node 4)
+	maximum = 0.9981 (at node 2)
+Injected packet length average = 9.92304
+Accepted packet length average = 10.007
+Total in-flight flits = 560252 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 31.71
+BEGIN Configuration File: examples/dragonflyconfig_30
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.30;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_30tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_30
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3616.97
+	minimum = 14
+	maximum = 9958
+Network latency average = 3614.18
+	minimum = 14
+	maximum = 9956
+Slowest packet = 320
+Flit latency average = 3605.7
+	minimum = 5
+	maximum = 9952
+Slowest flit = 6355
+Fragmentation average = 7.30356
+	minimum = 0
+	maximum = 102
+Injected packet rate average = 0.00568267
+	minimum = 0.0039 (at node 392)
+	maximum = 0.0319 (at node 1)
+Accepted packet rate average = 0.000377462
+	minimum = 0 (at node 4)
+	maximum = 0.0997 (at node 0)
+Injected flit rate average = 0.0563861
+	minimum = 0.0386 (at node 392)
+	maximum = 0.319 (at node 1)
+Accepted flit rate average= 0.00377737
+	minimum = 0 (at node 4)
+	maximum = 0.9982 (at node 1)
+Injected packet length average = 9.92246
+Accepted packet length average = 10.0073
+Total in-flight flits = 560201 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.1537
+BEGIN Configuration File: examples/dragonflyconfig_35
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.35;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_35tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_35
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3769.89
+	minimum = 14
+	maximum = 9962
+Network latency average = 3748.98
+	minimum = 14
+	maximum = 9959
+Slowest packet = 1424
+Flit latency average = 3738.24
+	minimum = 5
+	maximum = 9950
+Slowest flit = 14249
+Fragmentation average = 7.13322
+	minimum = 0
+	maximum = 74
+Injected packet rate average = 0.00568125
+	minimum = 0.0039 (at node 944)
+	maximum = 0.0346 (at node 0)
+Accepted packet rate average = 0.000377462
+	minimum = 0 (at node 4)
+	maximum = 0.0999 (at node 1)
+Injected flit rate average = 0.056373
+	minimum = 0.0386 (at node 944)
+	maximum = 0.3453 (at node 0)
+Accepted flit rate average= 0.00377756
+	minimum = 0 (at node 4)
+	maximum = 0.9991 (at node 1)
+Injected packet length average = 9.92264
+Accepted packet length average = 10.0078
+Total in-flight flits = 560049 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 28.7734
+BEGIN Configuration File: examples/dragonflyconfig_40
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.40;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_40tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_40
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 3960.97
+	minimum = 14
+	maximum = 9955
+Network latency average = 3892.76
+	minimum = 14
+	maximum = 9955
+Slowest packet = 1146
+Flit latency average = 3883.77
+	minimum = 5
+	maximum = 9965
+Slowest flit = 11445
+Fragmentation average = 7.51467
+	minimum = 0
+	maximum = 80
+Injected packet rate average = 0.00568523
+	minimum = 0.0041 (at node 183)
+	maximum = 0.0348 (at node 2)
+Accepted packet rate average = 0.000377557
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 2)
+Injected flit rate average = 0.0564184
+	minimum = 0.0406 (at node 183)
+	maximum = 0.3476 (at node 2)
+Accepted flit rate average= 0.00377973
+	minimum = 0 (at node 4)
+	maximum = 0.9989 (at node 2)
+Injected packet length average = 9.92368
+Accepted packet length average = 10.011
+Total in-flight flits = 560446 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.177
+BEGIN Configuration File: examples/dragonflyconfig_45
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.45;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_45tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_45
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4117.64
+	minimum = 14
+	maximum = 9953
+Network latency average = 3981.71
+	minimum = 14
+	maximum = 9953
+Slowest packet = 1544
+Flit latency average = 3971.15
+	minimum = 5
+	maximum = 9975
+Slowest flit = 7256
+Fragmentation average = 7.64846
+	minimum = 0
+	maximum = 99
+Injected packet rate average = 0.00570625
+	minimum = 0.0038 (at node 465)
+	maximum = 0.0333 (at node 1)
+Accepted packet rate average = 0.000377936
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 0)
+Injected flit rate average = 0.0566223
+	minimum = 0.0376 (at node 465)
+	maximum = 0.3326 (at node 1)
+Accepted flit rate average= 0.0037822
+	minimum = 0 (at node 4)
+	maximum = 0.9992 (at node 0)
+Injected packet length average = 9.92285
+Accepted packet length average = 10.0075
+Total in-flight flits = 562640 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.0095
+BEGIN Configuration File: examples/dragonflyconfig_50
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.50;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_50tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_50
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4106.31
+	minimum = 14
+	maximum = 9963
+Network latency average = 3878.67
+	minimum = 14
+	maximum = 9963
+Slowest packet = 792
+Flit latency average = 3870.02
+	minimum = 5
+	maximum = 9989
+Slowest flit = 4460
+Fragmentation average = 7.48107
+	minimum = 0
+	maximum = 76
+Injected packet rate average = 0.00570275
+	minimum = 0.004 (at node 235)
+	maximum = 0.0357 (at node 3)
+Accepted packet rate average = 0.000377746
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 0)
+Injected flit rate average = 0.0565905
+	minimum = 0.0396 (at node 235)
+	maximum = 0.3566 (at node 3)
+Accepted flit rate average= 0.00378144
+	minimum = 0 (at node 4)
+	maximum = 0.999 (at node 0)
+Injected packet length average = 9.92338
+Accepted packet length average = 10.0105
+Total in-flight flits = 562278 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.4519
+BEGIN Configuration File: examples/dragonflyconfig_55
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.55;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_55tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_55
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4155.44
+	minimum = 14
+	maximum = 9936
+Network latency average = 3953.23
+	minimum = 14
+	maximum = 9936
+Slowest packet = 663
+Flit latency average = 3941.41
+	minimum = 5
+	maximum = 9927
+Slowest flit = 6637
+Fragmentation average = 7.68915
+	minimum = 0
+	maximum = 117
+Injected packet rate average = 0.00569896
+	minimum = 0.0039 (at node 811)
+	maximum = 0.0343 (at node 2)
+Accepted packet rate average = 0.000377746
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 1)
+Injected flit rate average = 0.0565498
+	minimum = 0.0386 (at node 811)
+	maximum = 0.3426 (at node 2)
+Accepted flit rate average= 0.00378049
+	minimum = 0 (at node 4)
+	maximum = 0.9982 (at node 1)
+Injected packet length average = 9.92283
+Accepted packet length average = 10.008
+Total in-flight flits = 561888 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.0152
+BEGIN Configuration File: examples/dragonflyconfig_60
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.60;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_60tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_60
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4165.25
+	minimum = 14
+	maximum = 9970
+Network latency average = 3906.59
+	minimum = 14
+	maximum = 9969
+Slowest packet = 783
+Flit latency average = 3893.33
+	minimum = 5
+	maximum = 9992
+Slowest flit = 2230
+Fragmentation average = 7.05935
+	minimum = 0
+	maximum = 66
+Injected packet rate average = 0.0056732
+	minimum = 0.0039 (at node 925)
+	maximum = 0.0384 (at node 3)
+Accepted packet rate average = 0.000378125
+	minimum = 0 (at node 4)
+	maximum = 0.0999 (at node 2)
+Injected flit rate average = 0.0562942
+	minimum = 0.0386 (at node 925)
+	maximum = 0.3836 (at node 3)
+Accepted flit rate average= 0.00378277
+	minimum = 0 (at node 4)
+	maximum = 0.9992 (at node 2)
+Injected packet length average = 9.92283
+Accepted packet length average = 10.004
+Total in-flight flits = 559144 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.617
+BEGIN Configuration File: examples/dragonflyconfig_65
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.65;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_65tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_65
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4262.77
+	minimum = 14
+	maximum = 9975
+Network latency average = 3970.83
+	minimum = 14
+	maximum = 9975
+Slowest packet = 1290
+Flit latency average = 3958.8
+	minimum = 5
+	maximum = 9981
+Slowest flit = 6152
+Fragmentation average = 7.17348
+	minimum = 0
+	maximum = 115
+Injected packet rate average = 0.00567945
+	minimum = 0.0038 (at node 293)
+	maximum = 0.0373 (at node 3)
+Accepted packet rate average = 0.000377746
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 1)
+Injected flit rate average = 0.0563555
+	minimum = 0.0376 (at node 293)
+	maximum = 0.3726 (at node 3)
+Accepted flit rate average= 0.00377983
+	minimum = 0 (at node 4)
+	maximum = 0.9983 (at node 1)
+Injected packet length average = 9.9227
+Accepted packet length average = 10.0063
+Total in-flight flits = 559835 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.3994
+BEGIN Configuration File: examples/dragonflyconfig_70
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.70;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_70tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_70
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4297.34
+	minimum = 14
+	maximum = 9995
+Network latency average = 3931.1
+	minimum = 14
+	maximum = 9995
+Slowest packet = 219
+Flit latency average = 3920.6
+	minimum = 5
+	maximum = 9986
+Slowest flit = 2190
+Fragmentation average = 7.25752
+	minimum = 0
+	maximum = 95
+Injected packet rate average = 0.00567102
+	minimum = 0.0038 (at node 463)
+	maximum = 0.0374 (at node 2)
+Accepted packet rate average = 0.00037803
+	minimum = 0 (at node 4)
+	maximum = 0.0999 (at node 1)
+Injected flit rate average = 0.0562707
+	minimum = 0.0376 (at node 463)
+	maximum = 0.3737 (at node 2)
+Accepted flit rate average= 0.00378277
+	minimum = 0 (at node 4)
+	maximum = 0.999 (at node 1)
+Injected packet length average = 9.9225
+Accepted packet length average = 10.0065
+Total in-flight flits = 558914 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.0515
+BEGIN Configuration File: examples/dragonflyconfig_75
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.75;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_75tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_75
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4406.25
+	minimum = 14
+	maximum = 9988
+Network latency average = 4032.52
+	minimum = 14
+	maximum = 9988
+Slowest packet = 570
+Flit latency average = 4021.35
+	minimum = 5
+	maximum = 9979
+Slowest flit = 5709
+Fragmentation average = 7.29917
+	minimum = 0
+	maximum = 117
+Injected packet rate average = 0.00568996
+	minimum = 0.0038 (at node 886)
+	maximum = 0.0361 (at node 3)
+Accepted packet rate average = 0.000377936
+	minimum = 0 (at node 4)
+	maximum = 0.0999 (at node 1)
+Injected flit rate average = 0.0564658
+	minimum = 0.0376 (at node 886)
+	maximum = 0.3606 (at node 3)
+Accepted flit rate average= 0.00378182
+	minimum = 0 (at node 4)
+	maximum = 0.9993 (at node 1)
+Injected packet length average = 9.92376
+Accepted packet length average = 10.0065
+Total in-flight flits = 560924 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 28.0581
+BEGIN Configuration File: examples/dragonflyconfig_80
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.80;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_80tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_80
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4440.43
+	minimum = 14
+	maximum = 9937
+Network latency average = 4057.31
+	minimum = 14
+	maximum = 9937
+Slowest packet = 1111
+Flit latency average = 4044.99
+	minimum = 5
+	maximum = 9935
+Slowest flit = 35955
+Fragmentation average = 7.38567
+	minimum = 0
+	maximum = 84
+Injected packet rate average = 0.00566222
+	minimum = 0.0038 (at node 735)
+	maximum = 0.035 (at node 1)
+Accepted packet rate average = 0.000378125
+	minimum = 0 (at node 4)
+	maximum = 0.0999 (at node 2)
+Injected flit rate average = 0.0561834
+	minimum = 0.0376 (at node 735)
+	maximum = 0.3496 (at node 1)
+Accepted flit rate average= 0.00378314
+	minimum = 0 (at node 4)
+	maximum = 0.9993 (at node 2)
+Injected packet length average = 9.92252
+Accepted packet length average = 10.005
+Total in-flight flits = 557990 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 28.4681
+BEGIN Configuration File: examples/dragonflyconfig_85
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.85;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_85tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_85
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4470.25
+	minimum = 14
+	maximum = 9963
+Network latency average = 4028.95
+	minimum = 14
+	maximum = 9963
+Slowest packet = 1762
+Flit latency average = 4020.8
+	minimum = 5
+	maximum = 9957
+Slowest flit = 24023
+Fragmentation average = 7.35105
+	minimum = 0
+	maximum = 71
+Injected packet rate average = 0.00568494
+	minimum = 0.0042 (at node 180)
+	maximum = 0.0356 (at node 1)
+Accepted packet rate average = 0.000377652
+	minimum = 0 (at node 4)
+	maximum = 0.0997 (at node 0)
+Injected flit rate average = 0.0564072
+	minimum = 0.0412 (at node 987)
+	maximum = 0.3556 (at node 1)
+Accepted flit rate average= 0.00378078
+	minimum = 0 (at node 4)
+	maximum = 0.9984 (at node 0)
+Injected packet length average = 9.92221
+Accepted packet length average = 10.0113
+Total in-flight flits = 560405 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 28.9499
+BEGIN Configuration File: examples/dragonflyconfig_90
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+// Dragonfly
+//
+
+
+
+
+vc_buf_size = 256;
+
+
+wait_for_tail_credit = 0;
+
+//
+// Router architecture
+//
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+
+
+routing_function = min;
+num_vcs     = 2;
+
+priority = none;
+traffic       = tornado; 
+
+injection_rate = 0.90;
+packet_size = 10;
+injection_rate_uses_flits=1;
+
+topology = dragonflynew;
+
+k  = 4;
+n  = 1;
+
+stats_out = dragonflyout_90tor.m;
+watch_out=-;
+
+END Configuration File: examples/dragonflyconfig_90
+ Dragonfly 
+ p = 4 n = 1
+ each switch - total radix =  15
+ # of switches = 264
+ # of channels = 2904
+ # of nodes ( size of network ) = 1056
+ # of groups (_g) = 33
+ # of routers per group (_a) = 8
+Done links
+Class 0:
+Packet latency average = 4455.19
+	minimum = 14
+	maximum = 9966
+Network latency average = 4013.65
+	minimum = 14
+	maximum = 9959
+Slowest packet = 687
+Flit latency average = 4001.33
+	minimum = 5
+	maximum = 9974
+Slowest flit = 15320
+Fragmentation average = 7.35238
+	minimum = 0
+	maximum = 127
+Injected packet rate average = 0.00567301
+	minimum = 0.0039 (at node 711)
+	maximum = 0.0369 (at node 3)
+Accepted packet rate average = 0.000377841
+	minimum = 0 (at node 4)
+	maximum = 0.0998 (at node 0)
+Injected flit rate average = 0.0562905
+	minimum = 0.0386 (at node 711)
+	maximum = 0.3686 (at node 3)
+Accepted flit rate average= 0.00378201
+	minimum = 0 (at node 4)
+	maximum = 0.9989 (at node 2)
+Injected packet length average = 9.92251
+Accepted packet length average = 10.0095
+Total in-flight flits = 559132 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 29.1034
