@@ -568,31 +568,237 @@ int dor_next_mesh( int cur, int dest, bool descending )
   }
 }
 
-int onion_next_mesh( int cur, int dest, bool descending )
+
+// FUNCTION FOR ODD EVEN 2D MESH ROUTING
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+void odd_even_mesh(const Router *r, const Flit *f, 
+                   int in_channel, OutputSet *outputs, bool inject) {
+    // Setup for virtual channel ranges based on flit type
+    int vcBegin = 0, vcEnd = gNumVCs - 1;
+    if (f->type == Flit::READ_REQUEST) {
+        vcBegin = gReadReqBeginVC;
+        vcEnd = gReadReqEndVC;
+    } else if (f->type == Flit::WRITE_REQUEST) {
+        vcBegin = gWriteReqBeginVC;
+        vcEnd = gWriteReqEndVC;
+    } else if (f->type == Flit::READ_REPLY) {
+        vcBegin = gReadReplyBeginVC;
+        vcEnd = gReadReplyEndVC;
+    } else if (f->type == Flit::WRITE_REPLY) {
+        vcBegin = gWriteReplyBeginVC;
+        vcEnd = gWriteReplyEndVC;
+    }
+
+    outputs->Clear();
+
+    if(inject) {
+      // Handle the packet injection scenario
+      outputs->AddRange(-1, vcBegin, vcEnd);
+      return;
+    }
+
+    else if (r->GetID() == f->dest) {
+       // Flit has arrived at its destination; add the local delivery port
+        outputs->AddRange(2 * gN, vcBegin, vcEnd); // at destination
+        return;
+    }
+
+    // Convert linear IDs to 2D coordinates for current and destination
+    int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK;
+    int dest_x = f->dest % gK, dest_y = f->dest / gK;
+
+    bool x_dir_positive = dest_x > cur_x;
+    bool y_dir_positive = dest_y > cur_y;
+
+    // Odd-Even Turn Model Restrictions
+   for (int dim = 0; dim < 2; ++dim) { // Loop over dimensions: 0 for X (horizontal), 1 for Y (vertical)
+    // Determine if movement is needed in the current dimension (X or Y).
+    bool move_in_dim = (dim == 0) ? (cur_x != dest_x) : (cur_y != dest_y);
+    if (move_in_dim) {
+        // Determine the direction of movement based on the destination's relative position
+        // For X: 1 = East, 3 = West; For Y: 0 = North, 2 = South.
+        int direction = (dim == 0) ? (x_dir_positive ? 1 : 3) : (y_dir_positive ? 0 : 2);
+        // Initially assume that the movement in this direction is allowed
+        bool allowed = true;
+        // Apply Odd-Even routing restrictions specific to the X dimension
+        if (dim == 0) { // When considering movement along the X-axis (East or West)
+            // Disallow westward movement from odd columns, as per Odd-Even model
+            if (!x_dir_positive && (cur_x % 2 == 1)) {
+                allowed = false;
+            }
+            // Disallow eastward movement past the destination from odd columns
+            if (x_dir_positive && dest_x < cur_x && (dest_x % 2 == 1)) {
+                allowed = false;
+            }
+        } else { // Considerations for the Y dimension (North or South)
+            // Y-dimension routing decisions are less restricted under the Odd-Even model
+            // Allow movements if in an odd column or aligned with the destination column
+            if (cur_x % 2 == 1 || cur_x == dest_x) {
+                allowed = true; // No additional restrictions for Y dimension
+            } else {
+                // Additional restrictions for Y movement could be applied here based on
+                // specific network configuration or extension of the Odd-Even model
+                if ((direction == 0 && !y_dir_positive) || (direction == 2 && y_dir_positive)) {
+                    allowed = false; // Example: Preventing certain turns based on column parity
+                }
+            }
+        }
+
+        // If the movement is allowed based on Odd-Even restrictions, add it to the OutputSet
+        if (allowed) {
+            outputs->AddRange(direction, vcBegin, vcEnd);
+            break; // Exit the loop after making a routing decision
+        }
+    }
+  }
+}
+
+
+// int odd_even_next_mesh( int cur, int dest, int src, bool descending ) //Does descending make sense here?
+// {
+//   //if we are at destination just exit
+//   if ( cur == dest ) {
+//     return 2*gN;  // Eject
+//   }
+//   //Initialize available set to null
+//   vector<int> available_dimension_set; //Need to encode E,W,N,S
+  
+//   for (int d = 0; d < gN; d++){ //Iterating over dimensions
+//     int dist;
+//     int cur_loc = cur % gK; 
+//     int src_loc = src % gK;
+//     int dst_loc = dest % gK;
+//     //Calculate number of hops required in each dimension + save them?
+//     //Save location of curr node in each dimension?
+//   }
+  
+//   //If we are not at destination we get hops needed in each dimension
+
+//   //If we are in the same column as the destination -> logic to add elements into the avail_dimension_set
+
+//   //If we are not in the same column as destination -> eastbound vs westbound messages-> what dimensions are available
+
+//   //After constructing the avail_dimension_set -> we select a dimension to forward the packet to-> what condition do we use to select a dimension out of available dimensions?
+  
+//   int dim_left;
+
+//   if(descending) {
+//     for ( dim_left = ( gN - 1 ); dim_left > 0; --dim_left ) {
+//       if ( ( cur * gK / gNodes ) != ( dest * gK / gNodes ) ) { break; }
+//       cur = (cur * gK) % gNodes; dest = (dest * gK) % gNodes;
+//     }
+//     cur = (cur * gK) / gNodes;
+//     dest = (dest * gK) / gNodes;
+//   } else {
+//     for ( dim_left = 0; dim_left < ( gN - 1 ); ++dim_left ) {
+//       if ( ( cur % gK ) != ( dest % gK ) ) { break; }
+//       cur /= gK; dest /= gK;
+//     }
+//     cur %= gK;
+//     dest %= gK;
+//   }
+
+//   if ( cur < dest ) {
+//     return 2*dim_left;     // Right
+//   } else {
+//     return 2*dim_left + 1; // Left
+//   }
+// }
+
+int get_ring_weight( int dim_locs[] ) {
+  //ring weight is based on max number of steps from center of mesh in any dim
+  int max_dist = -1;
+  int mid_loc = gK / 2;
+  for (int d = 0; d < gN; d++){
+    int dist;
+    int loc = dim_locs[d];
+    //different cases if there is an even vs odd K
+    if (gK % 2 == 0) 
+      dist = (loc <= mid_loc)? (mid_loc - loc + 1) : (loc - mid_loc);
+    else 
+      dist = (loc <= mid_loc)? (mid_loc - loc + 1): (loc - mid_loc + 1);
+
+    if (dist > max_dist)
+      max_dist = dist;
+  }
+  return max_dist;
+}
+
+int weighted_random(int dim_weights[]){
+  int total = 0;
+  int d;
+  for (d = 0; d < gN; d++)
+    total += dim_weights[d];
+
+  int choice = RandomInt(total - 1);
+
+  total = 0;
+  for (d = 0; d < gN-1; d++){
+    total += dim_weights[d];
+    if (choice < total)
+      break;
+  }
+
+  return d;
+}
+
+int onion_next_mesh( int cur, int dest, bool random)
 {
   if ( cur == dest ) {
     return 2*gN;  // Eject
   }
 
-  int dim_left;
+  // weight for each dim, set to zero if packet does not need to be routed in
+  // a certain dim
+  int dim_weights[gN];
+  int cur_loc[gN];
+  int dest_loc[gN];
 
-  if(descending) {
-    for ( dim_left = ( gN - 1 ); dim_left > 0; --dim_left ) {
-      if ( ( cur * gK / gNodes ) != ( dest * gK / gNodes ) ) { break; }
-      cur = (cur * gK) % gNodes; dest = (dest * gK) % gNodes;
-    }
-    cur = (cur * gK) / gNodes;
-    dest = (dest * gK) / gNodes;
-  } else {
-    for ( dim_left = 0; dim_left < ( gN - 1 ); ++dim_left ) {
-      if ( ( cur % gK ) != ( dest % gK ) ) { break; }
-      cur /= gK; dest /= gK;
-    }
-    cur %= gK;
-    dest %= gK;
+  for (int d = 0; d < gN; d++){
+    cur_loc[d] = cur % gK;
+    cur /= gK;
+    dest_loc[d] = dest % gK;
+    dest /= gK;
   }
 
-  if ( cur < dest ) {
+  for (int d = 0; d < gN; d++){
+    if ( cur_loc[d] != dest_loc[d] ) {
+      // set weight value in dim to ring weight
+      int temp = cur_loc[d];
+      if (cur_loc[d] < dest_loc[d])
+        cur_loc[d]++;
+      else
+        cur_loc[d]--;
+      dim_weights[d] = get_ring_weight(cur_loc);
+      cur_loc[d] = temp;
+    }
+    else
+      dim_weights[d] = 0;
+  }
+
+  int dim_left = 0;
+  if (random){
+    // ramdomly choose dim based on weights in dim_weights
+    dim_left = weighted_random(dim_weights);
+  }
+  else{
+    // choose dim based on max value in dim_weights
+    int max_weight = -1;
+    for (int d = 0; d < gN; d++) {
+      if (dim_weights[d] > max_weight){
+        max_weight = dim_weights[d];
+        dim_left = d;
+      }
+    }
+  }
+
+  if ( cur_loc[dim_left] < dest_loc[dim_left] ) {
     return 2*dim_left;     // Right
   } else {
     return 2*dim_left + 1; // Left
@@ -708,6 +914,42 @@ void dim_order_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *
   outputs->AddRange( out_port, vcBegin, vcEnd );
 }
 
+void onion_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
+{
+  int out_port = inject ? -1 : onion_next_mesh( r->GetID( ), f->dest, true);
+  
+  int vcBegin = 0, vcEnd = gNumVCs-1;
+  if ( f->type == Flit::READ_REQUEST ) {
+    vcBegin = gReadReqBeginVC;
+    vcEnd = gReadReqEndVC;
+  } else if ( f->type == Flit::WRITE_REQUEST ) {
+    vcBegin = gWriteReqBeginVC;
+    vcEnd = gWriteReqEndVC;
+  } else if ( f->type ==  Flit::READ_REPLY ) {
+    vcBegin = gReadReplyBeginVC;
+    vcEnd = gReadReplyEndVC;
+  } else if ( f->type ==  Flit::WRITE_REPLY ) {
+    vcBegin = gWriteReplyBeginVC;
+    vcEnd = gWriteReplyEndVC;
+  }
+  assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+
+  if ( !inject && f->watch ) {
+    *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+	       << "Adding VC range [" 
+	       << vcBegin << "," 
+	       << vcEnd << "]"
+	       << " at output port " << out_port
+	       << " for flit " << f->id
+	       << " (input port " << in_channel
+	       << ", destination " << f->dest << ")"
+	       << "." << endl;
+  }
+  
+  outputs->Clear();
+
+  outputs->AddRange( out_port, vcBegin, vcEnd );
+}
 //=============================================================
 
 void dim_order_ni_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
@@ -1996,6 +2238,7 @@ void InitializeRoutingMap( const Configuration & config )
   gRoutingFunctionMap["nca_tree4"]           = &tree4_nca;
   gRoutingFunctionMap["anca_tree4"]          = &tree4_anca;
   gRoutingFunctionMap["dor_mesh"]            = &dim_order_mesh;
+  gRoutingFunctionMap["onion_mesh"]          = &onion_mesh;
   gRoutingFunctionMap["xy_yx_mesh"]          = &xy_yx_mesh;
   gRoutingFunctionMap["adaptive_xy_yx_mesh"]          = &adaptive_xy_yx_mesh;
   // End Balfour-Schultz

@@ -34,11 +34,11 @@ k = 8;
 n = 2;
 
 // Routing
-routing_function = dor;
+routing_function = onion;
 
 // Flow control
-num_vcs     = 1;
-vc_buf_size = 64;
+num_vcs     = 8;
+vc_buf_size = 8;
 wait_for_tail_credit = 1;
 
 // Router architecture
@@ -57,7 +57,7 @@ internal_speedup  = 1.0;
 
 
 // Traffic
-traffic = randperm;
+traffic = uniform;
 packet_size = 20;
 
 
@@ -65,4 +65,6 @@ packet_size = 20;
 sim_type = latency;
 
 injection_rate = 0.005;
+
+seed = 1;
 
