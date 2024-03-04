@@ -1,4 +1,4 @@
-// $Id: dragonflyconfig 3555 2011-05-16 23:37:55Z dub $
+// $Id $
 
 // Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
 // All rights reserved.
@@ -24,20 +24,31 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+///////////////////BEGIN IMMUTABLE////////////////////////////////
+//
+// Flow control
+//
+read_request_begin_vc  = 0;
+read_request_end_vc    = 5;
+write_reply_begin_vc   = 2;
+write_reply_end_vc     = 7;
+read_reply_begin_vc    = 8;
+read_reply_end_vc      = 12;
+write_request_begin_vc = 10;
+write_request_end_vc   = 15;
 
-hold_switch_for_packet=1;
-
-vc_buf_size = 16;
-
+// Total number of VCs must match the above assignments
+num_vcs     = 16;
+vc_buf_size = 8;
 
 wait_for_tail_credit = 0;
 
 //
-// Router architecture
+// Router architectureq
 //
-vc_allocator = separable_input_first; 
-sw_allocator = separable_input_first;
-alloc_iters  = 1;
+vc_allocator = max_size; 
+sw_allocator = max_size;
+alloc_iters  = 2;
 
 credit_delay   = 2;
 routing_delay  = 0;
@@ -49,29 +60,73 @@ input_speedup     = 1;
 output_speedup    = 1;
 internal_speedup  = 1.0;
 
+//
+// Traffic
+//
+
+sim_type = latency;
 
 warmup_periods = 3;
+
+
 sim_count          = 1;
+
+///////////////////END IMMUTABLE////////////////////////////////
+
+
+
+// Flatfly 
+//
+// #node = k^(n+1)
+//
+// x, y, specifies the arrangement of routers in x and y dim
+// xr, yr specifiies the arayment of clients in a router
+//
+topology = flatfly;
+subnets = 1;
+
+c  = 4;
+k  = 4;
+n  = 2;
+
+x  = 4;
+y  = 4;
+xr = 2;
+yr = 2;
+
+//the nodes above "limit" does not emit or receiv traffic
+limit = 64;
+
+
+//
+// Routing
+//
+
+routing_function = ran_min;
+
+packet_size = 1;
+
+traffic       = uniform;
 
 sample_period  = 10000;  
 
+use_read_write = 0;
+
+batch_size = 10000;
+
+injection_rate = 0.78;
+
+sim_type = latency;
+
+speculative = 0;
+
+print_activity = 0;
 
 
-routing_function = nca;
-num_vcs     = 4;
 
-priority = none;
-traffic       = uniform;
+read_request_size=1;
+read_reply_size=4;
+write_request_size=4;
+write_reply_size=1;
 
-injection_rate = 0.26;
-packet_size = 1;
-injection_rate_uses_flits=1;
-
-topology = fattree;
-
-
-k  = 8;
-n  = 3;
-t = 4;
-
-watch_out=-;
+sim_power = 0;

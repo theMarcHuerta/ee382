@@ -1,4 +1,4 @@
-// $Id: dragonflyconfig 3555 2011-05-16 23:37:55Z dub $
+// $Id$
 
 // Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
 // All rights reserved.
@@ -24,10 +24,13 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+// Dragonfly
+//
 
-hold_switch_for_packet=1;
 
-vc_buf_size = 16;
+
+
+vc_buf_size = 256;
 
 
 wait_for_tail_credit = 0;
@@ -47,7 +50,7 @@ st_final_delay = 1;
 
 input_speedup     = 1;
 output_speedup    = 1;
-internal_speedup  = 1.0;
+internal_speedup  = 2.0;
 
 
 warmup_periods = 3;
@@ -57,21 +60,20 @@ sample_period  = 10000;
 
 
 
-routing_function = nca;
-num_vcs     = 4;
+routing_function = min;
+num_vcs     = 2;
 
 priority = none;
-traffic       = uniform;
+traffic       = uniform; 
 
-injection_rate = 0.26;
-packet_size = 1;
+injection_rate = 0.7;
+packet_size = 10;
 injection_rate_uses_flits=1;
 
-topology = fattree;
+topology = dragonflynew;
 
-
-k  = 8;
-n  = 3;
-t = 4;
+k  = 4;
+n  = 1;
 
 watch_out=-;
+stats_out = try.m;

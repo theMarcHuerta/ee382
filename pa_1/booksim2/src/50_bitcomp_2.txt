@@ -1,3 +1,4 @@
+BEGIN Configuration File: examples/fattree_config
 // $Id: dragonflyconfig 3555 2011-05-16 23:37:55Z dub $
 
 // Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
@@ -61,9 +62,9 @@ routing_function = nca;
 num_vcs     = 4;
 
 priority = none;
-traffic       = uniform;
+traffic       = bitcomp;
 
-injection_rate = 0.26;
+injection_rate = 0.50;
 packet_size = 1;
 injection_rate_uses_flits=1;
 
@@ -72,6 +73,48 @@ topology = fattree;
 
 k  = 8;
 n  = 3;
-t = 4;
+t = 2;
 
-watch_out=-;
+watch_out=-;;END Configuration File: examples/fattree_config
+Fat Tree
+ k = 8 levels = 3
+ each switch - total radix =  16
+ # of switches = 192
+ # of channels = 2048
+ # of nodes ( size of network ) = 512
+Class 0:
+Packet latency average = 677.56
+	minimum = 22
+	maximum = 2448
+Network latency average = 234.131
+	minimum = 22
+	maximum = 807
+Slowest packet = 246247
+Flit latency average = 234.131
+	minimum = 22
+	maximum = 807
+Slowest flit = 2002326
+Fragmentation average = 0
+	minimum = 0
+	maximum = 0
+Injected packet rate average = 0.443735
+	minimum = 0.3937 (at node 289)
+	maximum = 0.4786 (at node 108)
+Accepted packet rate average = 0.432863
+	minimum = 0.3836 (at node 222)
+	maximum = 0.468 (at node 403)
+Injected flit rate average = 0.443735
+	minimum = 0.3937 (at node 289)
+	maximum = 0.4786 (at node 108)
+Accepted flit rate average= 0.432863
+	minimum = 0.3836 (at node 222)
+	maximum = 0.468 (at node 403)
+Injected packet length average = 1
+Accepted packet length average = 1
+Total in-flight flits = 55956 (0 measured)
+latency change    = 1
+throughput change = 1
+Average latency for class 0 exceeded 500 cycles. Aborting simulation.
+Too many sample periods needed to converge
+Simulation unstable, ending ...
+Total run time 34.5958
