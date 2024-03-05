@@ -34,6 +34,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <limits>
+#include <fstream>
 
 #include "globals.hpp"
 #include "random_utils.hpp"
@@ -64,6 +65,7 @@ IQRouter::IQRouter( Configuration const & config, Module *parent,
 
   _routing_delay    = config.GetInt( "routing_delay" );
   _vc_alloc_delay   = config.GetInt( "vc_alloc_delay" );
+  flit_count = 0;
   if(!_vc_alloc_delay) {
     Error("VC allocator cannot have zero delay.");
   }
@@ -182,7 +184,9 @@ IQRouter::IQRouter( Configuration const & config, Module *parent,
 
 IQRouter::~IQRouter( )
 {
-
+  cout << FullName() << " | "
+		   << "Received total flits: " << flit_count
+		   << "." << endl;
   if(gPrintActivity) {
     cout << Name() << ".bufferMonitor:" << endl ; 
     cout << *_bufferMonitor << endl ;
@@ -296,6 +300,7 @@ void IQRouter::WriteOutputs( )
 bool IQRouter::_ReceiveFlits( )
 {
   bool activity = false;
+
   for(int input = 0; input < _inputs; ++input) { 
     Flit * const f = _input_channels[input]->Receive();
     if(f) {
@@ -310,6 +315,11 @@ bool IQRouter::_ReceiveFlits( )
 		   << " from channel at input " << input
 		   << "." << endl;
       }
+      flit_count++;
+      /*myfile << GetSimTime() << " | " << FullName() << " | "
+		   << "Received flit " << f->id
+		   << " from channel at input " << input
+		   << "." << endl;*/
       _in_queue_flits.insert(make_pair(input, f));
       activity = true;
     }

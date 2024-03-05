@@ -66,6 +66,8 @@ class IQRouter : public Router {
   int _routing_delay;
   int _vc_alloc_delay;
   int _sw_alloc_delay;
+
+  int flit_count;
   
   map<int, Flit *> _in_queue_flits;
 
