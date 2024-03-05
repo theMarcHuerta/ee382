@@ -568,6 +568,23 @@ int dor_next_mesh( int cur, int dest, bool descending )
   }
 }
 
+int weighted_random(int weights[], int n){
+  int total = 0;
+  int i;
+  for (i = 0; i < n; i++)
+    total += weights[i];
+
+  int choice = RandomInt(total - 1);
+
+  total = 0;
+  for (i = 0; i < n-1; i++){
+    total += weights[i];
+    if (choice < total)
+      break;
+  }
+
+  return i;
+}
 
 // FUNCTION FOR ODD EVEN 2D MESH ROUTING
 ////////////////////////////////////////////////////////////////////////
@@ -602,7 +619,6 @@ void odd_even_mesh(const Router *r, const Flit *f,
       outputs->AddRange(-1, vcBegin, vcEnd);
       return;
     }
-
     else if (r->GetID() == f->dest) {
        // Flit has arrived at its destination; add the local delivery port
         outputs->AddRange(2 * gN, vcBegin, vcEnd); // at destination
@@ -612,9 +628,50 @@ void odd_even_mesh(const Router *r, const Flit *f,
     // Convert linear IDs to 2D coordinates for current and destination
     int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK;
     int dest_x = f->dest % gK, dest_y = f->dest / gK;
+    int src_x = f->src % gK;
 
     bool x_dir_positive = dest_x > cur_x;
     bool y_dir_positive = dest_y > cur_y;
+    int available_dimension_set[4] = {0, 0, 0, 0};
+    int east = 0, west = 1, north = 2, south = 3;
+    int e_x = dest_x - cur_x;
+    int e_y = dest_y - cur_y;
+
+    if (e_x == 0){
+      if (e_y > 0)
+        available_dimension_set[north] = 1;
+      else
+        available_dimension_set[south] = 1;
+    }
+    else{
+      if (e_x > 0){
+        if (e_y == 0)
+          available_dimension_set[east] = 1;
+        else{
+          if (cur_x % 2 == 1 || cur_x == src_x){
+            if (e_y > 0)
+              available_dimension_set[north] = 1;
+            else
+              available_dimension_set[south] = 1;
+          }
+          if (dest_x % 2 == 1 || e_x != 1)
+            available_dimension_set[east] = 1;
+        }
+      }
+      else{
+        available_dimension_set[west] = 1;
+        if (cur_x % 2 == 0){
+          if (e_y > 0)
+            available_dimension_set[north] = 1;
+          else
+            available_dimension_set[south] = 1;
+        }
+      }
+    }
+
+    int dir = weighted_random(available_dimension_set, 4);
+    outputs->AddRange(dir, vcBegin, vcEnd);
+    return;
 
     // Odd-Even Turn Model Restrictions
    for (int dim = 0; dim < 2; ++dim) { // Loop over dimensions: 0 for X (horizontal), 1 for Y (vertical)
@@ -659,58 +716,6 @@ void odd_even_mesh(const Router *r, const Flit *f,
   }
 }
 
-
-// int odd_even_next_mesh( int cur, int dest, int src, bool descending ) //Does descending make sense here?
-// {
-//   //if we are at destination just exit
-//   if ( cur == dest ) {
-//     return 2*gN;  // Eject
-//   }
-//   //Initialize available set to null
-//   vector<int> available_dimension_set; //Need to encode E,W,N,S
-  
-//   for (int d = 0; d < gN; d++){ //Iterating over dimensions
-//     int dist;
-//     int cur_loc = cur % gK; 
-//     int src_loc = src % gK;
-//     int dst_loc = dest % gK;
-//     //Calculate number of hops required in each dimension + save them?
-//     //Save location of curr node in each dimension?
-//   }
-  
-//   //If we are not at destination we get hops needed in each dimension
-
-//   //If we are in the same column as the destination -> logic to add elements into the avail_dimension_set
-
-//   //If we are not in the same column as destination -> eastbound vs westbound messages-> what dimensions are available
-
-//   //After constructing the avail_dimension_set -> we select a dimension to forward the packet to-> what condition do we use to select a dimension out of available dimensions?
-  
-//   int dim_left;
-
-//   if(descending) {
-//     for ( dim_left = ( gN - 1 ); dim_left > 0; --dim_left ) {
-//       if ( ( cur * gK / gNodes ) != ( dest * gK / gNodes ) ) { break; }
-//       cur = (cur * gK) % gNodes; dest = (dest * gK) % gNodes;
-//     }
-//     cur = (cur * gK) / gNodes;
-//     dest = (dest * gK) / gNodes;
-//   } else {
-//     for ( dim_left = 0; dim_left < ( gN - 1 ); ++dim_left ) {
-//       if ( ( cur % gK ) != ( dest % gK ) ) { break; }
-//       cur /= gK; dest /= gK;
-//     }
-//     cur %= gK;
-//     dest %= gK;
-//   }
-
-//   if ( cur < dest ) {
-//     return 2*dim_left;     // Right
-//   } else {
-//     return 2*dim_left + 1; // Left
-//   }
-// }
-
 int get_ring_weight( int dim_locs[] ) {
   //ring weight is based on max number of steps from center of mesh in any dim
   int max_dist = -1;
@@ -730,23 +735,6 @@ int get_ring_weight( int dim_locs[] ) {
   return max_dist;
 }
 
-int weighted_random(int dim_weights[]){
-  int total = 0;
-  int d;
-  for (d = 0; d < gN; d++)
-    total += dim_weights[d];
-
-  int choice = RandomInt(total - 1);
-
-  total = 0;
-  for (d = 0; d < gN-1; d++){
-    total += dim_weights[d];
-    if (choice < total)
-      break;
-  }
-
-  return d;
-}
 
 int onion_next_mesh( int cur, int dest, bool random)
 {
@@ -785,7 +773,7 @@ int onion_next_mesh( int cur, int dest, bool random)
   int dim_left = 0;
   if (random){
     // ramdomly choose dim based on weights in dim_weights
-    dim_left = weighted_random(dim_weights);
+    dim_left = weighted_random(dim_weights, gN);
   }
   else{
     // choose dim based on max value in dim_weights
@@ -2239,6 +2227,7 @@ void InitializeRoutingMap( const Configuration & config )
   gRoutingFunctionMap["anca_tree4"]          = &tree4_anca;
   gRoutingFunctionMap["dor_mesh"]            = &dim_order_mesh;
   gRoutingFunctionMap["onion_mesh"]          = &onion_mesh;
+  gRoutingFunctionMap["odd_even_mesh"]          = &odd_even_mesh;
   gRoutingFunctionMap["xy_yx_mesh"]          = &xy_yx_mesh;
   gRoutingFunctionMap["adaptive_xy_yx_mesh"]          = &adaptive_xy_yx_mesh;
   // End Balfour-Schultz
