@@ -673,47 +673,33 @@ void odd_even_mesh(const Router *r, const Flit *f,
     outputs->AddRange(dir, vcBegin, vcEnd);
     return;
 
-    // Odd-Even Turn Model Restrictions
-   for (int dim = 0; dim < 2; ++dim) { // Loop over dimensions: 0 for X (horizontal), 1 for Y (vertical)
-    // Determine if movement is needed in the current dimension (X or Y).
-    bool move_in_dim = (dim == 0) ? (cur_x != dest_x) : (cur_y != dest_y);
-    if (move_in_dim) {
-        // Determine the direction of movement based on the destination's relative position
-        // For X: 1 = East, 3 = West; For Y: 0 = North, 2 = South.
-        int direction = (dim == 0) ? (x_dir_positive ? 1 : 3) : (y_dir_positive ? 0 : 2);
-        // Initially assume that the movement in this direction is allowed
-        bool allowed = true;
-        // Apply Odd-Even routing restrictions specific to the X dimension
-        if (dim == 0) { // When considering movement along the X-axis (East or West)
-            // Disallow westward movement from odd columns, as per Odd-Even model
-            if (!x_dir_positive && (cur_x % 2 == 1)) {
-                allowed = false;
-            }
-            // Disallow eastward movement past the destination from odd columns
-            if (x_dir_positive && dest_x < cur_x && (dest_x % 2 == 1)) {
-                allowed = false;
-            }
-        } else { // Considerations for the Y dimension (North or South)
-            // Y-dimension routing decisions are less restricted under the Odd-Even model
-            // Allow movements if in an odd column or aligned with the destination column
-            if (cur_x % 2 == 1 || cur_x == dest_x) {
-                allowed = true; // No additional restrictions for Y dimension
-            } else {
-                // Additional restrictions for Y movement could be applied here based on
-                // specific network configuration or extension of the Odd-Even model
-                if ((direction == 0 && !y_dir_positive) || (direction == 2 && y_dir_positive)) {
-                    allowed = false; // Example: Preventing certain turns based on column parity
-                }
-            }
-        }
+    // Vector to hold all possible directions without violating Odd-Even routing
+    std::vector<int> valid_directions;
 
-        // If the movement is allowed based on Odd-Even restrictions, add it to the OutputSet
-        if (allowed) {
-            outputs->AddRange(direction, vcBegin, vcEnd);
-            break; // Exit the loop after making a routing decision
+    // Check possible moves in the X dimension
+    if (cur_x != dest_x) {
+        bool x_dir_positive = dest_x > cur_x;
+        if ((x_dir_positive && !(cur_x & 1) && (cur_x < dest_x)) || 
+            (!x_dir_positive && (cur_x & 1) && (cur_x > dest_x))) {
+            valid_directions.push_back(x_dir_positive ? 1 : 3); // Right or Left
         }
     }
-  }
+
+    // Check possible moves in the Y dimension
+    if (cur_y != dest_y) {
+        bool y_dir_positive = dest_y > cur_y;
+        if ((y_dir_positive && ((cur_y < dest_y) || (cur_x == dest_x))) ||
+            (!y_dir_positive && (cur_x != dest_x))) {
+            valid_directions.push_back(y_dir_positive ? 0 : 2); // Up or Down
+        }
+    }
+
+    // If there are valid directions that adhere to OE routing, choose one randomly
+    if (!valid_directions.empty()) {
+        int selected_index = rand() % valid_directions.size(); // Randomly select an index
+        int selected_direction = valid_directions[selected_index]; // Use the index to select a direction
+        outputs->AddRange(selected_direction, vcBegin, vcEnd); // Add the selected direction to OutputSet
+    }
 }
 
 int get_ring_weight( int dim_locs[] ) {
