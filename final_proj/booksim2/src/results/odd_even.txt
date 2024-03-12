@@ -1,0 +1,365 @@
+BEGIN Configuration File: examples/mesh88_lat
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+//8X8 mesh with 20 flits per packet under injection mode
+//injection rate here is packet per cycle, NOT flit per cycle
+
+// Topology
+
+topology = mesh;
+k = 8;
+n = 2;
+
+// Routing
+routing_function = odd_even;
+
+// Flow control
+num_vcs     = 2;
+vc_buf_size = 256;
+wait_for_tail_credit = 0;
+
+// Router architecture
+vc_allocator = separable_input_first; 
+sw_allocator = separable_input_first;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 0;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 2.0;
+
+
+// Traffic
+traffic = uniform;
+packet_size = 20;
+
+injection_rate = 0.2;
+injection_rate_uses_flits=1;
+
+seed = 1;
+
+warmup_periods = 3;
+sim_count          = 1;
+
+sample_period  = 10000;  
+
+END Configuration File: examples/mesh88_lat
+Class 0:
+Packet latency average = 71.1366
+	minimum = 24
+	maximum = 349
+Network latency average = 68.7453
+	minimum = 24
+	maximum = 339
+Slowest packet = 4745
+Flit latency average = 43.3071
+	minimum = 5
+	maximum = 320
+Slowest flit = 94919
+Fragmentation average = 11.5613
+	minimum = 0
+	maximum = 81
+Injected packet rate average = 0.0100344
+	minimum = 0.0082 (at node 8)
+	maximum = 0.012 (at node 18)
+Accepted packet rate average = 0.00998281
+	minimum = 0.0078 (at node 32)
+	maximum = 0.0126 (at node 44)
+Injected flit rate average = 0.200433
+	minimum = 0.164 (at node 8)
+	maximum = 0.24 (at node 18)
+Accepted flit rate average= 0.199967
+	minimum = 0.1578 (at node 32)
+	maximum = 0.252 (at node 44)
+Injected packet length average = 19.9746
+Accepted packet length average = 20.0311
+Total in-flight flits = 461 (0 measured)
+latency change    = 1
+throughput change = 1
+Class 0:
+Packet latency average = 70.24
+	minimum = 24
+	maximum = 349
+Network latency average = 67.863
+	minimum = 24
+	maximum = 339
+Slowest packet = 4745
+Flit latency average = 42.4556
+	minimum = 5
+	maximum = 320
+Slowest flit = 94919
+Fragmentation average = 11.5196
+	minimum = 0
+	maximum = 81
+Injected packet rate average = 0.00999453
+	minimum = 0.0079 (at node 48)
+	maximum = 0.01175 (at node 40)
+Accepted packet rate average = 0.00996563
+	minimum = 0.0082 (at node 32)
+	maximum = 0.0112 (at node 44)
+Injected flit rate average = 0.19977
+	minimum = 0.158 (at node 48)
+	maximum = 0.235 (at node 40)
+Accepted flit rate average= 0.199399
+	minimum = 0.164 (at node 32)
+	maximum = 0.224 (at node 44)
+Injected packet length average = 19.9879
+Accepted packet length average = 20.0087
+Total in-flight flits = 629 (0 measured)
+latency change    = 0.0127648
+throughput change = 0.0028484
+Class 0:
+Packet latency average = 72.1908
+	minimum = 24
+	maximum = 467
+Network latency average = 69.963
+	minimum = 24
+	maximum = 467
+Slowest packet = 16000
+Flit latency average = 44.5072
+	minimum = 5
+	maximum = 448
+Slowest flit = 320005
+Fragmentation average = 11.5669
+	minimum = 0
+	maximum = 134
+Injected packet rate average = 0.00987344
+	minimum = 0.0078 (at node 29)
+	maximum = 0.0124 (at node 21)
+Accepted packet rate average = 0.00985156
+	minimum = 0.008 (at node 33)
+	maximum = 0.0123 (at node 2)
+Injected flit rate average = 0.19747
+	minimum = 0.156 (at node 29)
+	maximum = 0.248 (at node 21)
+Accepted flit rate average= 0.197306
+	minimum = 0.1609 (at node 4)
+	maximum = 0.2479 (at node 2)
+Injected packet length average = 20.0002
+Accepted packet length average = 20.0279
+Total in-flight flits = 733 (0 measured)
+latency change    = 0.0270222
+throughput change = 0.0106077
+Warmed up ...Time used is 30000 cycles
+Class 0:
+Packet latency average = 70.7177
+	minimum = 24
+	maximum = 323
+Network latency average = 68.4072
+	minimum = 24
+	maximum = 323
+Slowest packet = 22247
+Flit latency average = 43.1119
+	minimum = 5
+	maximum = 304
+Slowest flit = 444958
+Fragmentation average = 11.5304
+	minimum = 0
+	maximum = 80
+Injected packet rate average = 0.0100953
+	minimum = 0.008 (at node 9)
+	maximum = 0.0119 (at node 60)
+Accepted packet rate average = 0.0101187
+	minimum = 0.0073 (at node 55)
+	maximum = 0.0123 (at node 3)
+Injected flit rate average = 0.201863
+	minimum = 0.1616 (at node 9)
+	maximum = 0.238 (at node 60)
+Accepted flit rate average= 0.202148
+	minimum = 0.146 (at node 55)
+	maximum = 0.246 (at node 3)
+Injected packet length average = 19.9957
+Accepted packet length average = 19.9776
+Total in-flight flits = 578 (578 measured)
+latency change    = 0.0208312
+throughput change = 0.0239536
+Class 0:
+Packet latency average = 70.8042
+	minimum = 24
+	maximum = 323
+Network latency average = 68.4187
+	minimum = 24
+	maximum = 323
+Slowest packet = 22247
+Flit latency average = 43.0481
+	minimum = 5
+	maximum = 304
+Slowest flit = 444958
+Fragmentation average = 11.5526
+	minimum = 0
+	maximum = 101
+Injected packet rate average = 0.0100281
+	minimum = 0.0083 (at node 16)
+	maximum = 0.0117 (at node 21)
+Accepted packet rate average = 0.0100344
+	minimum = 0.00785 (at node 55)
+	maximum = 0.01215 (at node 3)
+Injected flit rate average = 0.200614
+	minimum = 0.166 (at node 16)
+	maximum = 0.234 (at node 21)
+Accepted flit rate average= 0.200568
+	minimum = 0.15715 (at node 55)
+	maximum = 0.2423 (at node 3)
+Injected packet length average = 20.0051
+Accepted packet length average = 19.9881
+Total in-flight flits = 726 (726 measured)
+latency change    = 0.00122202
+throughput change = 0.00787997
+Class 0:
+Packet latency average = 70.7599
+	minimum = 24
+	maximum = 323
+Network latency average = 68.3454
+	minimum = 24
+	maximum = 323
+Slowest packet = 22247
+Flit latency average = 43.0069
+	minimum = 5
+	maximum = 304
+Slowest flit = 444958
+Fragmentation average = 11.4733
+	minimum = 0
+	maximum = 101
+Injected packet rate average = 0.0100385
+	minimum = 0.00896667 (at node 16)
+	maximum = 0.0109667 (at node 21)
+Accepted packet rate average = 0.0100396
+	minimum = 0.0085 (at node 55)
+	maximum = 0.0115667 (at node 30)
+Injected flit rate average = 0.200811
+	minimum = 0.179333 (at node 16)
+	maximum = 0.219333 (at node 21)
+Accepted flit rate average= 0.200764
+	minimum = 0.17 (at node 55)
+	maximum = 0.231333 (at node 30)
+Injected packet length average = 20.004
+Accepted packet length average = 19.9972
+Total in-flight flits = 747 (747 measured)
+latency change    = 0.000625238
+throughput change = 0.000974146
+Draining all recorded packets ...
+Draining remaining packets ...
+Time taken is 60323 cycles
+====== Overall Traffic Statistics ======
+====== Traffic class 0 ======
+Packet latency average = 70.8445 (1 samples)
+	minimum = 24 (1 samples)
+	maximum = 323 (1 samples)
+Network latency average = 68.42 (1 samples)
+	minimum = 24 (1 samples)
+	maximum = 323 (1 samples)
+Flit latency average = 43.1027 (1 samples)
+	minimum = 5 (1 samples)
+	maximum = 304 (1 samples)
+Fragmentation average = 11.4807 (1 samples)
+	minimum = 0 (1 samples)
+	maximum = 101 (1 samples)
+Injected packet rate average = 0.0100385 (1 samples)
+	minimum = 0.00896667 (1 samples)
+	maximum = 0.0109667 (1 samples)
+Accepted packet rate average = 0.0100396 (1 samples)
+	minimum = 0.0085 (1 samples)
+	maximum = 0.0115667 (1 samples)
+Injected flit rate average = 0.200811 (1 samples)
+	minimum = 0.179333 (1 samples)
+	maximum = 0.219333 (1 samples)
+Accepted flit rate average = 0.200764 (1 samples)
+	minimum = 0.17 (1 samples)
+	maximum = 0.231333 (1 samples)
+Injected packet size average = 20.004 (1 samples)
+Accepted packet size average = 19.9972 (1 samples)
+Hops average = 6.59832 (1 samples)
+Total run time 13.9043
+network_0/router_0_0 | Received total flits: 30800.
+network_0/router_0_1 | Received total flits: 44740.
+network_0/router_0_2 | Received total flits: 57720.
+network_0/router_0_3 | Received total flits: 59360.
+network_0/router_0_4 | Received total flits: 61740.
+network_0/router_0_5 | Received total flits: 55580.
+network_0/router_0_6 | Received total flits: 45900.
+network_0/router_0_7 | Received total flits: 25680.
+network_0/router_1_0 | Received total flits: 51200.
+network_0/router_1_1 | Received total flits: 77420.
+network_0/router_1_2 | Received total flits: 94080.
+network_0/router_1_3 | Received total flits: 100000.
+network_0/router_1_4 | Received total flits: 97520.
+network_0/router_1_5 | Received total flits: 90640.
+network_0/router_1_6 | Received total flits: 66020.
+network_0/router_1_7 | Received total flits: 37440.
+network_0/router_2_0 | Received total flits: 63580.
+network_0/router_2_1 | Received total flits: 96700.
+network_0/router_2_2 | Received total flits: 113060.
+network_0/router_2_3 | Received total flits: 125780.
+network_0/router_2_4 | Received total flits: 116360.
+network_0/router_2_5 | Received total flits: 112340.
+network_0/router_2_6 | Received total flits: 76100.
+network_0/router_2_7 | Received total flits: 45340.
+network_0/router_3_0 | Received total flits: 70000.
+network_0/router_3_1 | Received total flits: 102560.
+network_0/router_3_2 | Received total flits: 120000.
+network_0/router_3_3 | Received total flits: 135620.
+network_0/router_3_4 | Received total flits: 125000.
+network_0/router_3_5 | Received total flits: 122120.
+network_0/router_3_6 | Received total flits: 81160.
+network_0/router_3_7 | Received total flits: 50520.
+network_0/router_4_0 | Received total flits: 68840.
+network_0/router_4_1 | Received total flits: 103700.
+network_0/router_4_2 | Received total flits: 121780.
+network_0/router_4_3 | Received total flits: 136080.
+network_0/router_4_4 | Received total flits: 127180.
+network_0/router_4_5 | Received total flits: 123860.
+network_0/router_4_6 | Received total flits: 80760.
+network_0/router_4_7 | Received total flits: 50260.
+network_0/router_5_0 | Received total flits: 63360.
+network_0/router_5_1 | Received total flits: 95080.
+network_0/router_5_2 | Received total flits: 112460.
+network_0/router_5_3 | Received total flits: 123820.
+network_0/router_5_4 | Received total flits: 119060.
+network_0/router_5_5 | Received total flits: 110240.
+network_0/router_5_6 | Received total flits: 75460.
+network_0/router_5_7 | Received total flits: 46460.
+network_0/router_6_0 | Received total flits: 50360.
+network_0/router_6_1 | Received total flits: 74320.
+network_0/router_6_2 | Received total flits: 92540.
+network_0/router_6_3 | Received total flits: 98600.
+network_0/router_6_4 | Received total flits: 98880.
+network_0/router_6_5 | Received total flits: 89320.
+network_0/router_6_6 | Received total flits: 67060.
+network_0/router_6_7 | Received total flits: 37580.
+network_0/router_7_0 | Received total flits: 29040.
+network_0/router_7_1 | Received total flits: 42440.
+network_0/router_7_2 | Received total flits: 55380.
+network_0/router_7_3 | Received total flits: 57080.
+network_0/router_7_4 | Received total flits: 62380.
+network_0/router_7_5 | Received total flits: 54960.
+network_0/router_7_6 | Received total flits: 47000.
+network_0/router_7_7 | Received total flits: 27440.

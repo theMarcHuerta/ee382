@@ -34,7 +34,7 @@ k = 8;
 n = 2;
 
 // Routing
-routing_function = odd_even;
+routing_function = dor;
 
 // Flow control
 num_vcs     = 2;

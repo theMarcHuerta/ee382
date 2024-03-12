@@ -673,33 +673,33 @@ void odd_even_mesh(const Router *r, const Flit *f,
     outputs->AddRange(dir, vcBegin, vcEnd);
     return;
 
-    // Vector to hold all possible directions without violating Odd-Even routing
-    std::vector<int> valid_directions;
+    // // Vector to hold all possible directions without violating Odd-Even routing
+    // std::vector<int> valid_directions;
 
-    // Check possible moves in the X dimension
-    if (cur_x != dest_x) {
-        bool x_dir_positive = dest_x > cur_x;
-        if ((x_dir_positive && !(cur_x & 1) && (cur_x < dest_x)) || 
-            (!x_dir_positive && (cur_x & 1) && (cur_x > dest_x))) {
-            valid_directions.push_back(x_dir_positive ? 1 : 3); // Right or Left
-        }
-    }
+    // // Check possible moves in the X dimension
+    // if (cur_x != dest_x) {
+    //     bool x_dir_positive = dest_x > cur_x;
+    //     if ((x_dir_positive && !(cur_x & 1) && (cur_x < dest_x)) || 
+    //         (!x_dir_positive && (cur_x & 1) && (cur_x > dest_x))) {
+    //         valid_directions.push_back(x_dir_positive ? 1 : 3); // Right or Left
+    //     }
+    // }
 
-    // Check possible moves in the Y dimension
-    if (cur_y != dest_y) {
-        bool y_dir_positive = dest_y > cur_y;
-        if ((y_dir_positive && ((cur_y < dest_y) || (cur_x == dest_x))) ||
-            (!y_dir_positive && (cur_x != dest_x))) {
-            valid_directions.push_back(y_dir_positive ? 0 : 2); // Up or Down
-        }
-    }
+    // // Check possible moves in the Y dimension
+    // if (cur_y != dest_y) {
+    //     bool y_dir_positive = dest_y > cur_y;
+    //     if ((y_dir_positive && ((cur_y < dest_y) || (cur_x == dest_x))) ||
+    //         (!y_dir_positive && (cur_x != dest_x))) {
+    //         valid_directions.push_back(y_dir_positive ? 0 : 2); // Up or Down
+    //     }
+    // }
 
-    // If there are valid directions that adhere to OE routing, choose one randomly
-    if (!valid_directions.empty()) {
-        int selected_index = rand() % valid_directions.size(); // Randomly select an index
-        int selected_direction = valid_directions[selected_index]; // Use the index to select a direction
-        outputs->AddRange(selected_direction, vcBegin, vcEnd); // Add the selected direction to OutputSet
-    }
+    // // If there are valid directions that adhere to OE routing, choose one randomly
+    // if (!valid_directions.empty()) {
+    //     int selected_index = rand() % valid_directions.size(); // Randomly select an index
+    //     int selected_direction = valid_directions[selected_index]; // Use the index to select a direction
+    //     outputs->AddRange(selected_direction, vcBegin, vcEnd); // Add the selected direction to OutputSet
+    // }
 }
 
 int get_ring_weight( int dim_locs[] ) {
@@ -711,7 +711,7 @@ int get_ring_weight( int dim_locs[] ) {
     int loc = dim_locs[d];
     //different cases if there is an even vs odd K
     if (gK % 2 == 0) 
-      dist = (loc <= mid_loc)? (mid_loc - loc + 1) : (loc - mid_loc);
+      dist = (loc < mid_loc)? (mid_loc - loc) : (loc - mid_loc + 1);
     else 
       dist = (loc <= mid_loc)? (mid_loc - loc + 1): (loc - mid_loc + 1);
 
@@ -759,6 +759,25 @@ int onion_next_mesh( int cur, int dest, bool random)
   int dim_left = 0;
   if (random){
     // ramdomly choose dim based on weights in dim_weights
+    //subtract from each weight the smallest nonzero weight - 1
+    int min_nonzero = 0;
+    for (int d = 0; d < gN; d++){
+      if (dim_weights[d] != 0){
+        if (min_nonzero == 0 || dim_weights[d] < min_nonzero){
+          min_nonzero = dim_weights[d];
+        }
+      }
+    }
+    for (int d = 0; d < gN; d++){
+      if (dim_weights[d] != 0){
+        dim_weights[d] -= (min_nonzero-1);
+      }
+    }
+
+    // trying what happens if we square the weights
+    for (int d = 0; d < gN; d++){
+      dim_weights[d] = dim_weights[d]*dim_weights[d];
+    }
     dim_left = weighted_random(dim_weights, gN);
   }
   else{
