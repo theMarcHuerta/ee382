@@ -635,9 +635,6 @@ void odd_even_mesh(const Router *r, const Flit *f,
     int dest_x = f->dest % gK, dest_y = f->dest / gK; // Destination's location
     int src_x = f->src % gK; // Source's X-coordinate (used for certain Odd-Even rules)
 
-    // Determine directionality towards the destination in both dimensions
-    bool x_dir_positive = dest_x > cur_x; // True if destination is to the right
-    bool y_dir_positive = dest_y > cur_y; // True if destination is upwards
     int available_dimension_set[4] = {0, 0, 0, 0}; // Flags for allowed movement directions
     int east = 0, west = 1, north = 2, south = 3; // Direction identifiers
     int e_x = dest_x - cur_x; // X-axis distance to destination
@@ -767,7 +764,7 @@ int onion_next_mesh( int cur, int dest, bool random)
     for (int d = 0; d < gN; d++){
       dim_weights[d] = dim_weights[d]*dim_weights[d];
     }
-    weighted_random(dim_weights, gN);
+    dim_left = weighted_random(dim_weights, gN);
   }
   else{
     // choose dim based on max value in dim_weights
@@ -889,7 +886,7 @@ int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
     // choose dim based on max value in dim_weights
     int max_weight = -1;
     for (int d = 0; d < gN; d++) {
-      if (dim_weights[d] > max_weight){
+      if (dim_weights[d] > max_weight && (available_dimension_set[2*d] || available_dimension_set[2*d + 1])){
         max_weight = dim_weights[d];
         dim_left = d;
       }
@@ -915,11 +912,8 @@ int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
 int onion_odd_even_mesh_next(int cur, int dest, int src_x) {
 
     // Convert the linear router and destination IDs to 2D grid coordinates
-    int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK; // Current router's location
-    int dest_x = f->dest % gK, dest_y = f->dest / gK; // Destination's location
-    // Determine directionality towards the destination in both dimensions
-    bool x_dir_positive = dest_x > cur_x; // True if destination is to the right
-    bool y_dir_positive = dest_y > cur_y; // True if destination is upwards
+    int cur_x = cur % gK, cur_y = cur / gK; // Current router's location
+    int dest_x = dest % gK, dest_y = dest / gK; // Destination's location
     int available_dimension_set[4] = {0, 0, 0, 0}; // Flags for allowed movement directions
     int east = 0, west = 1, north = 2, south = 3; // Direction identifiers
     int e_x = dest_x - cur_x; // X-axis distance to destination
@@ -2450,6 +2444,7 @@ void InitializeRoutingMap( const Configuration & config )
   gRoutingFunctionMap["anca_tree4"]          = &tree4_anca;
   gRoutingFunctionMap["dor_mesh"]            = &dim_order_mesh;
   gRoutingFunctionMap["onion_mesh"]          = &onion_mesh;
+  gRoutingFunctionMap["onion_odd_even_mesh"]          = &onion_odd_even_mesh;
   gRoutingFunctionMap["odd_even_mesh"]          = &odd_even_mesh;
   gRoutingFunctionMap["xy_yx_mesh"]          = &xy_yx_mesh;
   gRoutingFunctionMap["adaptive_xy_yx_mesh"]          = &adaptive_xy_yx_mesh;
