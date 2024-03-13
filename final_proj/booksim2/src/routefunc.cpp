@@ -568,6 +568,11 @@ int dor_next_mesh( int cur, int dest, bool descending )
   }
 }
 
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
 int weighted_random(int weights[], int n){
   int total = 0;
   int i;
@@ -625,42 +630,44 @@ void odd_even_mesh(const Router *r, const Flit *f,
         return;
     }
 
-    // Convert linear IDs to 2D coordinates for current and destination
-    int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK;
-    int dest_x = f->dest % gK, dest_y = f->dest / gK;
-    int src_x = f->src % gK;
+    // Convert the linear router and destination IDs to 2D grid coordinates
+    int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK; // Current router's location
+    int dest_x = f->dest % gK, dest_y = f->dest / gK; // Destination's location
+    int src_x = f->src % gK; // Source's X-coordinate (used for certain Odd-Even rules)
 
-    bool x_dir_positive = dest_x > cur_x;
-    bool y_dir_positive = dest_y > cur_y;
-    int available_dimension_set[4] = {0, 0, 0, 0};
-    int east = 0, west = 1, north = 2, south = 3;
-    int e_x = dest_x - cur_x;
-    int e_y = dest_y - cur_y;
+    // Determine directionality towards the destination in both dimensions
+    bool x_dir_positive = dest_x > cur_x; // True if destination is to the right
+    bool y_dir_positive = dest_y > cur_y; // True if destination is upwards
+    int available_dimension_set[4] = {0, 0, 0, 0}; // Flags for allowed movement directions
+    int east = 0, west = 1, north = 2, south = 3; // Direction identifiers
+    int e_x = dest_x - cur_x; // X-axis distance to destination
+    int e_y = dest_y - cur_y; // Y-axis distance to destination
 
-    if (e_x == 0){
+    // Apply Odd-Even routing constraints to determine allowed movement directions
+    if (e_x == 0){ // If aligned along the X-axis
       if (e_y > 0)
-        available_dimension_set[north] = 1;
+        available_dimension_set[north] = 1; // Move north if destination is above
       else
-        available_dimension_set[south] = 1;
+        available_dimension_set[south] = 1; // Move south if destination is below
     }
     else{
-      if (e_x > 0){
+      if (e_x > 0){ // If destination is to the right
         if (e_y == 0)
-          available_dimension_set[east] = 1;
+          available_dimension_set[east] = 1; // Move east if aligned along the Y-axis
         else{
-          if (cur_x % 2 == 1 || cur_x == src_x){
+          if (cur_x % 2 == 1 || cur_x == src_x){ // Apply Odd-Even constraints for vertical movement
             if (e_y > 0)
               available_dimension_set[north] = 1;
             else
               available_dimension_set[south] = 1;
           }
           if (dest_x % 2 == 1 || e_x != 1)
-            available_dimension_set[east] = 1;
+            available_dimension_set[east] = 1; // Allow eastward movement under certain conditions
         }
       }
       else{
-        available_dimension_set[west] = 1;
-        if (cur_x % 2 == 0){
+        available_dimension_set[west] = 1; // Move west if destination is to the left
+        if (cur_x % 2 == 0){ // Apply Odd-Even constraints for vertical movement from even columns
           if (e_y > 0)
             available_dimension_set[north] = 1;
           else
@@ -669,58 +676,40 @@ void odd_even_mesh(const Router *r, const Flit *f,
       }
     }
 
-    int dir = weighted_random(available_dimension_set, 4);
-    outputs->AddRange(dir, vcBegin, vcEnd);
+    // Select a direction to move based on the available and allowed directions.
+    int dir = weighted_random(available_dimension_set, 4); // Assume weighted_random decides based on set weights
+    outputs->AddRange(dir, vcBegin, vcEnd); // Assign the selected direction to the output
     return;
-
-    // // Vector to hold all possible directions without violating Odd-Even routing
-    // std::vector<int> valid_directions;
-
-    // // Check possible moves in the X dimension
-    // if (cur_x != dest_x) {
-    //     bool x_dir_positive = dest_x > cur_x;
-    //     if ((x_dir_positive && !(cur_x & 1) && (cur_x < dest_x)) || 
-    //         (!x_dir_positive && (cur_x & 1) && (cur_x > dest_x))) {
-    //         valid_directions.push_back(x_dir_positive ? 1 : 3); // Right or Left
-    //     }
-    // }
-
-    // // Check possible moves in the Y dimension
-    // if (cur_y != dest_y) {
-    //     bool y_dir_positive = dest_y > cur_y;
-    //     if ((y_dir_positive && ((cur_y < dest_y) || (cur_x == dest_x))) ||
-    //         (!y_dir_positive && (cur_x != dest_x))) {
-    //         valid_directions.push_back(y_dir_positive ? 0 : 2); // Up or Down
-    //     }
-    // }
-
-    // // If there are valid directions that adhere to OE routing, choose one randomly
-    // if (!valid_directions.empty()) {
-    //     int selected_index = rand() % valid_directions.size(); // Randomly select an index
-    //     int selected_direction = valid_directions[selected_index]; // Use the index to select a direction
-    //     outputs->AddRange(selected_direction, vcBegin, vcEnd); // Add the selected direction to OutputSet
-    // }
 }
 
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
 int get_ring_weight( int dim_locs[] ) {
-  //ring weight is based on max number of steps from center of mesh in any dim
-  int max_dist = -1;
-  int mid_loc = gK / 2;
-  for (int d = 0; d < gN; d++){
-    int dist;
-    int loc = dim_locs[d];
-    //different cases if there is an even vs odd K
+  // Calculates the ring weight based on the maximum distance from the center in any dimension
+  int max_dist = -1; // Initialize the maximum distance as negative to ensure any real distance is larger
+  int mid_loc = gK / 2; // Determine the middle location of the dimension, works for both even and odd gK
+  for (int d = 0; d < gN; d++){ // Iterate over each dimension
+    int dist; // Distance from the center in the current dimension
+    int loc = dim_locs[d]; // Current location in the current dimension
+    // Calculate distance based on whether the mesh dimension is even or odd
     if (gK % 2 == 0) 
       dist = (loc < mid_loc)? (mid_loc - loc) : (loc - mid_loc + 1);
     else 
       dist = (loc <= mid_loc)? (mid_loc - loc + 1): (loc - mid_loc + 1);
-
+    // Update max_dist if this dimension's distance is larger
     if (dist > max_dist)
       max_dist = dist;
   }
-  return max_dist;
+  return max_dist; // Return the maximum distance, representing the ring weight.
 }
 
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
 
 int onion_next_mesh( int cur, int dest, bool random)
 {
@@ -778,7 +767,7 @@ int onion_next_mesh( int cur, int dest, bool random)
     for (int d = 0; d < gN; d++){
       dim_weights[d] = dim_weights[d]*dim_weights[d];
     }
-    dim_left = weighted_random(dim_weights, gN);
+    weighted_random(dim_weights, gN);
   }
   else{
     // choose dim based on max value in dim_weights
@@ -798,6 +787,184 @@ int onion_next_mesh( int cur, int dest, bool random)
   }
 }
 
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
+int weighted_oe_random(int weights[], int n){
+  int total = 0;
+  int i;
+  for (i = 0; i < n; i++)
+    total += weights[i];
+
+  int choice = RandomInt(total - 1);
+
+  total = 0;
+  for (i = 0; i < n-1; i++){
+    if (weights[i] == 0){
+        continue;
+    }
+    total += weights[i];
+    if (choice < total)
+      break;
+  }
+
+  return i;
+}
+
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
+int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
+{
+  if ( cur == dest ) {
+    return 2*gN;  // Eject
+  }
+
+  // weight for each dim, set to zero if packet does not need to be routed in
+  // a certain dim
+  // Initialize arrays to hold current and destination locations, and weights for each dimension
+  int dim_weights[gN]; // Holds "weights" for routing decisions in each dimension
+  int cur_loc[gN]; // Current location decomposed into mesh dimensions
+  int dest_loc[gN]; // Destination location decomposed into mesh dimensions
+  // Decompose the current and destination positions into their respective dimensional coordinates.
+  for (int d = 0; d < gN; d++){
+    cur_loc[d] = cur % gK;
+    cur /= gK;
+    dest_loc[d] = dest % gK;
+    dest /= gK;
+  }
+
+  // Calculate weights for each dimension based on a potential move's effect on the 'ring weight'
+  for (int d = 0; d < gN; d++) {
+    if (cur_loc[d] != dest_loc[d]) {
+      int temp = cur_loc[d]; // Temporarily save the current location
+      // Simulate a move closer to the destination in dimension d and calculate its ring weight
+      if (cur_loc[d] < dest_loc[d])
+        cur_loc[d]++;
+      else
+        cur_loc[d]--;
+      dim_weights[d] = get_ring_weight(cur_loc); // Update the dimension weight based on new ring weight
+      cur_loc[d] = temp; // Restore the original location
+    } else {
+      dim_weights[d] = 0; // No need to move in this dimension, set its weight to zero
+    }
+  }
+
+  int dim_left = 0;
+  if (random){
+    // Randomly choose a dimension for routing based on weights, with bias towards higher weights
+    // Find the smallest nonzero weight to normalize the distribution for randomness
+    int min_nonzero = INT_MAX;
+    for (int d = 0; d < gN; d++) {
+      if (dim_weights[d] > 0 && dim_weights[d] < min_nonzero) {
+        min_nonzero = dim_weights[d];
+      }
+    }
+    // Adjust weights by subtracting (min_nonzero - 1) to increase the likelihood of choosing a path with lower initial weight
+    for (int d = 0; d < gN; d++) {
+      if (dim_weights[d] > 0) {
+        dim_weights[d] -= (min_nonzero - 1);
+      }
+    }
+    // Square the weights to exaggerate differences between them, making the distribution more skewed towards higher weights
+    for (int d = 0; d < gN; d++) {
+      dim_weights[d] *= dim_weights[d];
+    }
+    // Seperate in bidirectional weights now
+    int bi_dir_dim_weights[gN*2];
+    for (int dim_num = 0; dim_num < gN; dim_num++){
+        // Takes into acount the valid cardinal directions from the odd even routing algorithm
+        bi_dir_dim_weights[gN * dim_num] = dim_weights[dim_num] * available_dimension_set[gN * dim_num];
+        bi_dir_dim_weights[gN * dim_num + 1] = dim_weights[dim_num] * available_dimension_set[gN * dim_num + 1];
+    }
+    // Select a dimension based on the adjusted weights, assuming weighted_random is defined to perform this selection.
+    return weighted_oe_random(bi_dir_dim_weights, gN*2);
+  }
+
+  else{
+    // choose dim based on max value in dim_weights
+    int max_weight = -1;
+    for (int d = 0; d < gN; d++) {
+      if (dim_weights[d] > max_weight){
+        max_weight = dim_weights[d];
+        dim_left = d;
+      }
+    }
+  }
+
+ // Determine the direction (Right or Left) to move in within the chosen dimension
+  if (cur_loc[dim_left] < dest_loc[dim_left]) {
+    return 2*dim_left;     // Move right (east) in the chosen dimension
+  } else {
+    return 2*dim_left + 1; // Move left (west) in the chosen dimension
+  }
+}
+
+// FUNCTION FOR ODD EVEN 2D MESH ROUTING
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+int onion_odd_even_mesh_next(int cur, int dest, int src_x) {
+
+    // Convert the linear router and destination IDs to 2D grid coordinates
+    int cur_x = r->GetID() % gK, cur_y = r->GetID() / gK; // Current router's location
+    int dest_x = f->dest % gK, dest_y = f->dest / gK; // Destination's location
+    // Determine directionality towards the destination in both dimensions
+    bool x_dir_positive = dest_x > cur_x; // True if destination is to the right
+    bool y_dir_positive = dest_y > cur_y; // True if destination is upwards
+    int available_dimension_set[4] = {0, 0, 0, 0}; // Flags for allowed movement directions
+    int east = 0, west = 1, north = 2, south = 3; // Direction identifiers
+    int e_x = dest_x - cur_x; // X-axis distance to destination
+    int e_y = dest_y - cur_y; // Y-axis distance to destination
+
+    // Apply Odd-Even routing constraints to determine allowed movement directions
+    if (e_x == 0){ // If aligned along the X-axis
+      if (e_y > 0)
+        available_dimension_set[north] = 1; // Move north if destination is above
+      else
+        available_dimension_set[south] = 1; // Move south if destination is below
+    }
+    else{
+      if (e_x > 0){ // If destination is to the right
+        if (e_y == 0)
+          available_dimension_set[east] = 1; // Move east if aligned along the Y-axis
+        else{
+          if (cur_x % 2 == 1 || cur_x == src_x){ // Apply Odd-Even constraints for vertical movement
+            if (e_y > 0)
+              available_dimension_set[north] = 1;
+            else
+              available_dimension_set[south] = 1;
+          }
+          if (dest_x % 2 == 1 || e_x != 1)
+            available_dimension_set[east] = 1; // Allow eastward movement under certain conditions
+        }
+      }
+      else{
+        available_dimension_set[west] = 1; // Move west if destination is to the left
+        if (cur_x % 2 == 0){ // Apply Odd-Even constraints for vertical movement from even columns
+          if (e_y > 0)
+            available_dimension_set[north] = 1;
+          else
+            available_dimension_set[south] = 1;
+        }
+      }
+    }
+
+    int outport = onion_peel(cur, dest, available_dimension_set, true);
+    return outport;
+}
+
+//=============================================================
+//=============================================================
+//=============================================================
 //=============================================================
 
 void dor_next_torus( int cur, int dest, int in_port,
@@ -907,6 +1074,11 @@ void dim_order_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *
   outputs->AddRange( out_port, vcBegin, vcEnd );
 }
 
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
 void onion_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
 {
   int out_port = inject ? -1 : onion_next_mesh( r->GetID( ), f->dest, true);
@@ -943,6 +1115,52 @@ void onion_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outp
 
   outputs->AddRange( out_port, vcBegin, vcEnd );
 }
+//=============================================================
+//=============================================================
+//=============================================================
+//=============================================================
+
+void onion_odd_even_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
+{
+    int src_x = f->src % gK; // Source's X-coordinate (used for certain Odd-Even rules)
+
+    int out_port = inject ? -1 : onion_odd_even_mesh_next( r->GetID( ), f->dest, src_x);
+    
+    int vcBegin = 0, vcEnd = gNumVCs-1;
+    if ( f->type == Flit::READ_REQUEST ) {
+        vcBegin = gReadReqBeginVC;
+        vcEnd = gReadReqEndVC;
+    } else if ( f->type == Flit::WRITE_REQUEST ) {
+        vcBegin = gWriteReqBeginVC;
+        vcEnd = gWriteReqEndVC;
+    } else if ( f->type ==  Flit::READ_REPLY ) {
+        vcBegin = gReadReplyBeginVC;
+        vcEnd = gReadReplyEndVC;
+    } else if ( f->type ==  Flit::WRITE_REPLY ) {
+        vcBegin = gWriteReplyBeginVC;
+        vcEnd = gWriteReplyEndVC;
+    }
+    assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+
+    if ( !inject && f->watch ) {
+        *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+            << "Adding VC range [" 
+            << vcBegin << "," 
+            << vcEnd << "]"
+            << " at output port " << out_port
+            << " for flit " << f->id
+            << " (input port " << in_channel
+            << ", destination " << f->dest << ")"
+            << "." << endl;
+    }
+    
+    outputs->Clear();
+
+    outputs->AddRange( out_port, vcBegin, vcEnd );
+}
+//=============================================================
+//=============================================================
+//=============================================================
 //=============================================================
 
 void dim_order_ni_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
