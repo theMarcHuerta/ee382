@@ -34,7 +34,9 @@ k = 8;
 n = 2;
 
 // Routing
-routing_function = dor;
+routing_function = onion_odd_even;
+random_weighted = 1;
+squared_weights = 0;
 
 // Flow control
 num_vcs     = 2;

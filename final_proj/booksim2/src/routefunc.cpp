@@ -57,6 +57,8 @@ map<string, tRoutingFunction> gRoutingFunctionMap;
 /* Global information used by routing functions */
 
 int gNumVCs;
+int g_use_weighted_random;
+int g_use_squared_weights;
 
 /* Add more functions here
  *
@@ -708,7 +710,7 @@ int get_ring_weight( int dim_locs[] ) {
 //=============================================================
 //=============================================================
 
-int onion_next_mesh( int cur, int dest, bool random)
+int onion_next_mesh( int cur, int dest)
 {
   if ( cur == dest ) {
     return 2*gN;  // Eject
@@ -743,7 +745,7 @@ int onion_next_mesh( int cur, int dest, bool random)
   }
 
   int dim_left = 0;
-  if (random){
+  if (g_use_weighted_random){
     // ramdomly choose dim based on weights in dim_weights
     //subtract from each weight the smallest nonzero weight - 1
     int min_nonzero = 0;
@@ -760,9 +762,10 @@ int onion_next_mesh( int cur, int dest, bool random)
       }
     }
 
-    // trying what happens if we square the weights
-    for (int d = 0; d < gN; d++){
-      dim_weights[d] = dim_weights[d]*dim_weights[d];
+    if (g_use_squared_weights){
+      for (int d = 0; d < gN; d++){
+        dim_weights[d] = dim_weights[d]*dim_weights[d];
+      }
     }
     dim_left = weighted_random(dim_weights, gN);
   }
@@ -784,38 +787,13 @@ int onion_next_mesh( int cur, int dest, bool random)
   }
 }
 
-//=============================================================
-//=============================================================
-//=============================================================
-//=============================================================
-
-int weighted_oe_random(int weights[], int n){
-  int total = 0;
-  int i;
-  for (i = 0; i < n; i++)
-    total += weights[i];
-
-  int choice = RandomInt(total - 1);
-
-  total = 0;
-  for (i = 0; i < n-1; i++){
-    if (weights[i] == 0){
-        continue;
-    }
-    total += weights[i];
-    if (choice < total)
-      break;
-  }
-
-  return i;
-}
 
 //=============================================================
 //=============================================================
 //=============================================================
 //=============================================================
 
-int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
+int onion_peel( int cur, int dest, int available_dimension_set[])
 {
   if ( cur == dest ) {
     return 2*gN;  // Eject
@@ -852,7 +830,7 @@ int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
   }
 
   int dim_left = 0;
-  if (random){
+  if (g_use_weighted_random){
     // Randomly choose a dimension for routing based on weights, with bias towards higher weights
     // Find the smallest nonzero weight to normalize the distribution for randomness
     int min_nonzero = INT_MAX;
@@ -867,9 +845,11 @@ int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
         dim_weights[d] -= (min_nonzero - 1);
       }
     }
-    // Square the weights to exaggerate differences between them, making the distribution more skewed towards higher weights
-    for (int d = 0; d < gN; d++) {
-      dim_weights[d] *= dim_weights[d];
+    if (g_use_squared_weights){
+      // Square the weights to exaggerate differences between them, making the distribution more skewed towards higher weights
+      for (int d = 0; d < gN; d++) {
+        dim_weights[d] *= dim_weights[d];
+      }
     }
     // Seperate in bidirectional weights now
     int bi_dir_dim_weights[gN*2];
@@ -879,7 +859,7 @@ int onion_peel( int cur, int dest, int available_dimension_set[], bool random)
         bi_dir_dim_weights[gN * dim_num + 1] = dim_weights[dim_num] * available_dimension_set[gN * dim_num + 1];
     }
     // Select a dimension based on the adjusted weights, assuming weighted_random is defined to perform this selection.
-    return weighted_oe_random(bi_dir_dim_weights, gN*2);
+    return weighted_random(bi_dir_dim_weights, gN*2);
   }
 
   else{
@@ -952,7 +932,7 @@ int onion_odd_even_mesh_next(int cur, int dest, int src_x) {
       }
     }
 
-    int outport = onion_peel(cur, dest, available_dimension_set, true);
+    int outport = onion_peel(cur, dest, available_dimension_set);
     return outport;
 }
 
@@ -1075,7 +1055,7 @@ void dim_order_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *
 
 void onion_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
 {
-  int out_port = inject ? -1 : onion_next_mesh( r->GetID( ), f->dest, true);
+  int out_port = inject ? -1 : onion_next_mesh( r->GetID( ), f->dest);
   
   int vcBegin = 0, vcEnd = gNumVCs-1;
   if ( f->type == Flit::READ_REQUEST ) {
@@ -2396,6 +2376,8 @@ void InitializeRoutingMap( const Configuration & config )
 {
 
   gNumVCs = config.GetInt( "num_vcs" );
+  g_use_weighted_random = config.GetInt( "random_weighted" );
+  g_use_squared_weights = config.GetInt( "squared_weights" );
 
   //
   // traffic class partitions

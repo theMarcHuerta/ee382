@@ -53,6 +53,8 @@ BookSimConfig::BookSimConfig( )
   _int_map["n"] = 2; //network dimension
   _int_map["c"] = 1; //concentration
   AddStrField( "routing_function", "none" );
+  _int_map["random_weighted"] = 1; 
+  _int_map["squared_weights"] = 1; 
 
   //simulator tries to correclty adjust latency for node/router placement 
   _int_map["use_noc_latency"] = 1;
