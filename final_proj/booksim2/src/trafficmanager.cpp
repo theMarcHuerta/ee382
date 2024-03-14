@@ -58,6 +58,8 @@ TrafficManager * TrafficManager::New(Configuration const & config,
 TrafficManager::TrafficManager( const Configuration &config, const vector<Network *> & net )
     : Module( 0, "traffic_manager" ), _net(net), _empty_network(false), _deadlock_timer(0), _reset_time(0), _drain_time(-1), _cur_id(0), _cur_pid(0), _time(0)
 {
+    watch_src = config.GetInt("watch_src");
+    watch_dest = config.GetInt("watch_dest");
 
     _nodes = _net[0]->NumNodes( );
     _routers = _net[0]->NumRouters( );
@@ -857,7 +859,7 @@ void TrafficManager::_GeneratePacket( int source, int stype,
         f->id     = _cur_id++;
         assert(_cur_id);
         f->pid    = pid;
-        f->watch  = watch | (gWatchOut && (_flits_to_watch.count(f->id) > 0));
+        f->watch  = watch | (gWatchOut && (_flits_to_watch.count(f->id) > 0)) | (source == watch_src && packet_destination == watch_dest);
         f->subnetwork = subnetwork;
         f->src    = source;
         f->ctime  = time;

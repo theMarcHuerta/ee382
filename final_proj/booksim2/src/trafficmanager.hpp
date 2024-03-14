@@ -59,6 +59,8 @@ protected:
   int _nodes;
   int _routers;
   int _vcs;
+  int watch_src;
+  int watch_dest;
 
   vector<Network *> _net;
   vector<vector<Router *> > _router;
