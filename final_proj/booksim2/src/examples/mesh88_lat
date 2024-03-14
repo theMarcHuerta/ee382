@@ -32,13 +32,9 @@
 topology = mesh;
 k = 8;
 n = 2;
-// fault0 = -1;
-// fault1 = -1;
-// fault2 = -1;
-// fault3 = -1;
 
 // Routing
-routing_function = onion_odd_even;
+routing_function = odd_even;
 random_weighted = 1;
 squared_weights = 0;
 
@@ -70,12 +66,10 @@ packet_size = 20;
 injection_rate = 0.2;
 injection_rate_uses_flits=1;
 
-seed = 1;
+seed = 103;
 
 warmup_periods = 3;
 sim_count          = 1;
 
 sample_period  = 10000;  
 watch_out = watch_out.txt;
-watch_src = 5;
-watch_dest = 10;

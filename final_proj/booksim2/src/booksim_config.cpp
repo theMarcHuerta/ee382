@@ -55,10 +55,6 @@ BookSimConfig::BookSimConfig( )
   AddStrField( "routing_function", "none" );
   _int_map["random_weighted"] = 1; 
   _int_map["squared_weights"] = 1; 
-  _int_map["fault0"] = -1; 
-  _int_map["fault1"] = -1; 
-  _int_map["fault2"] = -1; 
-  _int_map["fault3"] = -1; 
   _int_map["watch_src"] = -1; 
   _int_map["watch_dest"] = -1; 
 
