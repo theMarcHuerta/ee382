@@ -61,6 +61,7 @@ int g_use_weighted_random;
 int g_use_squared_weights;
 int g_vc_buf_size;
 int g_num_vcs;
+int g_watch_node;
 
 /* Add more functions here
  *
@@ -665,6 +666,75 @@ void set_odd_even_available(int cur, int dest, int src, int available_dimension_
     }
 }
 
+int get_ring_weight( int dim_locs[] ) {
+  // Calculates the ring weight based on the maximum distance from the center in any dimension
+  int max_dist = -1; // Initialize the maximum distance as negative to ensure any real distance is larger
+  int mid_loc = gK / 2; // Determine the middle location of the dimension, works for both even and odd gK
+  for (int d = 0; d < gN; d++){ // Iterate over each dimension
+    int dist; // Distance from the center in the current dimension
+    int loc = dim_locs[d]; // Current location in the current dimension
+    // Calculate distance based on whether the mesh dimension is even or odd
+    if (gK % 2 == 0) 
+      dist = (loc < mid_loc)? (mid_loc - loc) : (loc - mid_loc + 1);
+    else 
+      dist = (loc <= mid_loc)? (mid_loc - loc + 1): (loc - mid_loc + 1);
+    // Update max_dist if this dimension's distance is larger
+    if (dist > max_dist)
+      max_dist = dist;
+  }
+  return max_dist; // Return the maximum distance, representing the ring weight.
+}
+
+// write onion weights into dim_weights, square if necessary
+// dim_weights should be of length 2*gN
+void set_onion_dim_weights( int cur, int dest, int dim_weights[]){
+  int cur_loc[gN];
+  int dest_loc[gN];
+  for (int d = 0; d < gN; d++){
+    cur_loc[d] = cur % gK;
+    cur /= gK;
+    dest_loc[d] = dest % gK;
+    dest /= gK;
+  }
+
+  for (int d = 0; d < gN; d++) {
+    if (cur_loc[d] < dest_loc[d]) {
+      cur_loc[d]++;
+      dim_weights[2*d] = get_ring_weight(cur_loc);
+      cur_loc[d]--;
+    }
+    else
+      dim_weights[2*d] = 0;
+
+    if (cur_loc[d] > dest_loc[d]) {
+      cur_loc[d]--;
+      dim_weights[2*d+1] = get_ring_weight(cur_loc);
+      cur_loc[d]++;
+    }
+    else
+      dim_weights[2*d+1] = 0;
+  }
+
+  int min_nonzero = INT_MAX;
+  for (int d = 0; d < 2*gN; d++) {
+    if (dim_weights[d] > 0 && dim_weights[d] < min_nonzero) {
+      min_nonzero = dim_weights[d];
+    }
+  }
+  assert(min_nonzero != INT_MAX);
+
+  for (int d = 0; d < 2*gN; d++) {
+    if (dim_weights[d] > 0) {
+      dim_weights[d] -= (min_nonzero - 1);
+    }
+  }
+  if (g_use_squared_weights){
+    for (int d = 0; d < 2*gN; d++) {
+      dim_weights[d] *= dim_weights[d];
+    }
+  }
+}
+
 int factorial(int n){
   int ret = 1;
   for (int i = 1; i <= n; i++)
@@ -733,7 +803,108 @@ void pd_ftr_mesh( const Router *r, const Flit *f,
       if (!dim_weights[0] && !dim_weights[1] && !dim_weights[2] && !dim_weights[3])
         out_port = dor_next_mesh(cur, dest);
       else
-        out_port = choose_dim(dim_weights, true);
+        out_port = choose_dim(dim_weights);
+    }
+  }
+
+  int vcBegin = 0, vcEnd = gNumVCs-1;
+  if ( f->type == Flit::READ_REQUEST ) {
+    vcBegin = gReadReqBeginVC;
+    vcEnd = gReadReqEndVC;
+  } else if ( f->type == Flit::WRITE_REQUEST ) {
+    vcBegin = gWriteReqBeginVC;
+    vcEnd = gWriteReqEndVC;
+  } else if ( f->type ==  Flit::READ_REPLY ) {
+    vcBegin = gReadReplyBeginVC;
+    vcEnd = gReadReplyEndVC;
+  } else if ( f->type ==  Flit::WRITE_REPLY ) {
+    vcBegin = gWriteReplyBeginVC;
+    vcEnd = gWriteReplyEndVC;
+  }
+  assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+  outputs->Clear();
+
+  if(inject) {
+    // If injecting, use all VCs
+    outputs->AddRange(-1, vcBegin, vcEnd);
+    return;
+  } else if(r->GetID() == f->dest) {
+     // If at destination, use the local delivery port
+    outputs->AddRange(2*gN, vcBegin, vcEnd);
+    return;
+  }
+
+  int in_vc;
+  if ( in_channel == 2*gN ) {
+    in_vc = vcEnd;  // Determine the incoming VC, ignoring injection VC
+  } else {
+    in_vc = f->vc;
+  }
+  
+  // DOR for the escape channel (VC 0), low priority 
+  int dor_port = dor_next_mesh( r->GetID( ), f->dest );    
+  outputs->AddRange( dor_port, 0, vcBegin, vcBegin );
+  
+  if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+		  << "Adding VC range [" 
+		  << vcBegin << "," 
+		  << vcBegin << "]"
+		  << " at output port " << dor_port
+		  << " for flit " << f->id
+		  << " (input port " << in_channel
+		  << ", destination " << f->dest << ")"
+		  << "." << endl;
+  }
+  
+  if ( in_vc != vcBegin ) { // If not in the escape VC
+    if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+      << "Adding VC range [" 
+      << (vcBegin+1) << "," 
+      << vcEnd << "]"
+      << " at output port " << out_port
+      << " with priority " << 1
+      << " for flit " << f->id
+      << " (input port " << in_channel
+      << ", destination " << f->dest << ")"
+      << "." << endl;
+    }
+    // Keep out of escape channel and make priority 1
+    outputs->AddRange(out_port, vcBegin+1, vcEnd, 1 ); 
+  } 
+}
+
+void onion_pd_ftr_mesh( const Router *r, const Flit *f, 
+		 int in_channel, OutputSet *outputs, bool inject )
+{
+  assert(gN == 2);
+  
+  int out_port;
+  if (inject)
+    out_port = -1;
+  else {
+    int cur = r->GetID();
+    int dest = f->dest;
+
+    if ( cur == dest ) {
+      out_port = 2*gN;
+    }
+    else {
+      int pd_ftr_dim_weights[2*gN];
+      set_pd_ftr_weights(r, cur, dest, pd_ftr_dim_weights);
+      int onion_dim_weights[2*gN];
+      set_onion_dim_weights(cur, dest, onion_dim_weights);
+      int combined_dim_weights[2*gN];
+      for (int d = 0; d < 2*gN; d++){
+        combined_dim_weights[d] = onion_dim_weights[d] * pd_ftr_dim_weights[d];
+      }
+
+      // it is possible that no nonzero weights are set if the buffers are full
+      if (!combined_dim_weights[0] && !combined_dim_weights[1] && !combined_dim_weights[2] && !combined_dim_weights[3])
+        out_port = dor_next_mesh(cur, dest);
+      else
+        out_port = choose_dim(combined_dim_weights);
     }
   }
 
@@ -753,11 +924,57 @@ void pd_ftr_mesh( const Router *r, const Flit *f,
   }
   assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
 
-
   outputs->Clear();
 
-  outputs->AddRange( out_port , vcBegin, vcEnd );
+  if(inject) {
+    // If injecting, use all VCs
+    outputs->AddRange(-1, vcBegin, vcEnd);
+    return;
+  } else if(r->GetID() == f->dest) {
+     // If at destination, use the local delivery port
+    outputs->AddRange(2*gN, vcBegin, vcEnd);
+    return;
+  }
+
+  int in_vc;
+  if ( in_channel == 2*gN ) {
+    in_vc = vcEnd;  // Determine the incoming VC, ignoring injection VC
+  } else {
+    in_vc = f->vc;
+  }
   
+  // DOR for the escape channel (VC 0), low priority 
+  int dor_port = dor_next_mesh( r->GetID( ), f->dest );    
+  outputs->AddRange( dor_port, 0, vcBegin, vcBegin );
+  
+  if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+		  << "Adding VC range [" 
+		  << vcBegin << "," 
+		  << vcBegin << "]"
+		  << " at output port " << dor_port
+		  << " for flit " << f->id
+		  << " (input port " << in_channel
+		  << ", destination " << f->dest << ")"
+		  << "." << endl;
+  }
+  
+  if ( in_vc != vcBegin ) { // If not in the escape VC
+    if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+      << "Adding VC range [" 
+      << (vcBegin+1) << "," 
+      << vcEnd << "]"
+      << " at output port " << out_port
+      << " with priority " << 1
+      << " for flit " << f->id
+      << " (input port " << in_channel
+      << ", destination " << f->dest << ")"
+      << "." << endl;
+    }
+    // Keep out of escape channel and make priority 1
+    outputs->AddRange(out_port, vcBegin+1, vcEnd, 1 ); 
+  } 
 }
 // FUNCTION FOR ODD EVEN 2D MESH ROUTING
 ////////////////////////////////////////////////////////////////////////
@@ -815,24 +1032,6 @@ void odd_even_mesh(const Router *r, const Flit *f,
 //=============================================================
 //=============================================================
 
-int get_ring_weight( int dim_locs[] ) {
-  // Calculates the ring weight based on the maximum distance from the center in any dimension
-  int max_dist = -1; // Initialize the maximum distance as negative to ensure any real distance is larger
-  int mid_loc = gK / 2; // Determine the middle location of the dimension, works for both even and odd gK
-  for (int d = 0; d < gN; d++){ // Iterate over each dimension
-    int dist; // Distance from the center in the current dimension
-    int loc = dim_locs[d]; // Current location in the current dimension
-    // Calculate distance based on whether the mesh dimension is even or odd
-    if (gK % 2 == 0) 
-      dist = (loc < mid_loc)? (mid_loc - loc) : (loc - mid_loc + 1);
-    else 
-      dist = (loc <= mid_loc)? (mid_loc - loc + 1): (loc - mid_loc + 1);
-    // Update max_dist if this dimension's distance is larger
-    if (dist > max_dist)
-      max_dist = dist;
-  }
-  return max_dist; // Return the maximum distance, representing the ring weight.
-}
 
 //=============================================================
 //=============================================================
@@ -845,56 +1044,6 @@ int get_ring_weight( int dim_locs[] ) {
 //=============================================================
 //=============================================================
 //=============================================================
-
-// write onion weights into dim_weights, square if necessary
-// dim_weights should be of length 2*gN
-void set_onion_dim_weights( int cur, int dest, int dim_weights[]){
-  int cur_loc[gN];
-  int dest_loc[gN];
-  for (int d = 0; d < gN; d++){
-    cur_loc[d] = cur % gK;
-    cur /= gK;
-    dest_loc[d] = dest % gK;
-    dest /= gK;
-  }
-
-  for (int d = 0; d < gN; d++) {
-    if (cur_loc[d] < dest_loc[d]) {
-      cur_loc[d]++;
-      dim_weights[2*d] = get_ring_weight(cur_loc);
-      cur_loc[d]--;
-    }
-    else
-      dim_weights[2*d] = 0;
-
-    if (cur_loc[d] > dest_loc[d]) {
-      cur_loc[d]--;
-      dim_weights[2*d+1] = get_ring_weight(cur_loc);
-      cur_loc[d]++;
-    }
-    else
-      dim_weights[2*d+1] = 0;
-  }
-
-  int min_nonzero = INT_MAX;
-  for (int d = 0; d < 2*gN; d++) {
-    if (dim_weights[d] > 0 && dim_weights[d] < min_nonzero) {
-      min_nonzero = dim_weights[d];
-    }
-  }
-  assert(min_nonzero != INT_MAX);
-
-  for (int d = 0; d < 2*gN; d++) {
-    if (dim_weights[d] > 0) {
-      dim_weights[d] -= (min_nonzero - 1);
-    }
-  }
-  if (g_use_squared_weights){
-    for (int d = 0; d < 2*gN; d++) {
-      dim_weights[d] *= dim_weights[d];
-    }
-  }
-}
 
 int onion_next_mesh( int cur, int dest)
 {
@@ -1163,6 +1312,16 @@ void onion_odd_even_mesh( const Router *r, const Flit *f, int in_channel, Output
             << " (input port " << in_channel
             << ", destination " << f->dest << ")"
             << "." << endl;
+    }
+
+    if (!inject && r->GetID() == g_watch_node ) {
+        *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+            << " src " << f->src
+            << " src_x " << f->src % gK
+            << " src_y " << f->src / gK
+            << " dest " << f->dest 
+            << " dest_x " << f->dest % gK
+            << " dest_y " << f->dest / gK << endl;
     }
     
     outputs->Clear();
@@ -2493,6 +2652,7 @@ void InitializeRoutingMap( const Configuration & config )
   g_use_squared_weights = config.GetInt( "squared_weights" );
   g_vc_buf_size = config.GetInt("vc_buf_size");
   g_num_vcs = config.GetInt("num_vcs");
+  g_watch_node = config.GetInt("watch_node");
 
   //
   // traffic class partitions
@@ -2577,4 +2737,5 @@ void InitializeRoutingMap( const Configuration & config )
   gRoutingFunctionMap["chaos_torus"] = &chaos_torus;
 
   gRoutingFunctionMap["pd_ftr_mesh"] = &pd_ftr_mesh;
+  gRoutingFunctionMap["onion_pd_ftr_mesh"] = &onion_pd_ftr_mesh;
 }

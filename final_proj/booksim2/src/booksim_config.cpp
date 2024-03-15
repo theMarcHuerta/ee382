@@ -57,6 +57,7 @@ BookSimConfig::BookSimConfig( )
   _int_map["squared_weights"] = 1; 
   _int_map["watch_src"] = -1; 
   _int_map["watch_dest"] = -1; 
+  _int_map["watch_node"] = -1; 
 
   //simulator tries to correclty adjust latency for node/router placement 
   _int_map["use_noc_latency"] = 1;
