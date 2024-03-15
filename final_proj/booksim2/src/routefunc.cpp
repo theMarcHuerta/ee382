@@ -1598,7 +1598,83 @@ void min_adapt_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *
     }
   } 
 }
+//=============================================================
 
+void onion_escape_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
+{
+  int vcBegin = 0, vcEnd = gNumVCs-1;
+  if ( f->type == Flit::READ_REQUEST ) {
+    vcBegin = gReadReqBeginVC;
+    vcEnd = gReadReqEndVC;
+  } else if ( f->type == Flit::WRITE_REQUEST ) {
+    vcBegin = gWriteReqBeginVC;
+    vcEnd = gWriteReqEndVC;
+  } else if ( f->type ==  Flit::READ_REPLY ) {
+    vcBegin = gReadReplyBeginVC;
+    vcEnd = gReadReplyEndVC;
+  } else if ( f->type ==  Flit::WRITE_REPLY ) {
+    vcBegin = gWriteReplyBeginVC;
+    vcEnd = gWriteReplyEndVC;
+  }
+  // Ensure the flit's VC is within the allowed range or is being injected
+  assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+
+  outputs->Clear( );
+  
+  if(inject) {
+    // If injecting, use all VCs
+    outputs->AddRange(-1, vcBegin, vcEnd);
+    return;
+  } else if(r->GetID() == f->dest) {
+     // If at destination, use the local delivery port
+    outputs->AddRange(2*gN, vcBegin, vcEnd);
+    return;
+  }
+
+  int in_vc;
+
+  if ( in_channel == 2*gN ) {
+    in_vc = vcEnd;  // Determine the incoming VC, ignoring injection VC
+  } else {
+    in_vc = f->vc;
+  }
+  
+  // DOR for the escape channel (VC 0), low priority 
+  int out_port = dor_next_mesh( r->GetID( ), f->dest );    
+  outputs->AddRange( out_port, 0, vcBegin, vcBegin );
+  
+  if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+		  << "Adding VC range [" 
+		  << vcBegin << "," 
+		  << vcBegin << "]"
+		  << " at output port " << out_port
+		  << " for flit " << f->id
+		  << " (input port " << in_channel
+		  << ", destination " << f->dest << ")"
+		  << "." << endl;
+  }
+  
+  if ( in_vc != vcBegin ) { // If not in the escape VC
+    // onion for all other channels
+    int out_port = onion_next_mesh( r->GetID( ), f->dest);
+    if ( f->watch ) {
+      *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+      << "Adding VC range [" 
+      << (vcBegin+1) << "," 
+      << vcEnd << "]"
+      << " at output port " << out_port
+      << " with priority " << 1
+      << " for flit " << f->id
+      << " (input port " << in_channel
+      << ", destination " << f->dest << ")"
+      << "." << endl;
+    }
+    // Keep out of escape channel and make priority 1
+    outputs->AddRange(out_port, vcBegin+1, vcEnd, 1 ); 
+  } 
+
+}
 //=============================================================
 
 void planar_adapt_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
