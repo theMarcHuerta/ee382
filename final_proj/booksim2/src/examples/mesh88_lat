@@ -34,12 +34,12 @@ k = 8;
 n = 2;
 
 // Routing
-routing_function = pd_ftr;
+routing_function = onion_escape;
 random_weighted = 1;
-squared_weights = 0;
+squared_weights = 1;
 
 // Flow control
-num_vcs     = 2;
+num_vcs     = 4;
 vc_buf_size = 256;
 wait_for_tail_credit = 0;
 
