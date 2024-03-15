@@ -59,6 +59,8 @@ map<string, tRoutingFunction> gRoutingFunctionMap;
 int gNumVCs;
 int g_use_weighted_random;
 int g_use_squared_weights;
+int g_vc_buf_size;
+int g_num_vcs;
 
 /* Add more functions here
  *
@@ -403,77 +405,6 @@ void fattree_anca( const Router *r, const Flit *f,
 
 int dor_next_mesh( int cur, int dest, bool descending = false );
 
-void pd_ftr_mesh( const Router *r, const Flit *f, 
-		 int in_channel, OutputSet *outputs, bool inject )
-{
-  int vcBegin = 0, vcEnd = gNumVCs-1;
-  if ( f->type == Flit::READ_REQUEST ) {
-    vcBegin = gReadReqBeginVC;
-    vcEnd = gReadReqEndVC;
-  } else if ( f->type == Flit::WRITE_REQUEST ) {
-    vcBegin = gWriteReqBeginVC;
-    vcEnd = gWriteReqEndVC;
-  } else if ( f->type ==  Flit::READ_REPLY ) {
-    vcBegin = gReadReplyBeginVC;
-    vcEnd = gReadReplyEndVC;
-  } else if ( f->type ==  Flit::WRITE_REPLY ) {
-    vcBegin = gWriteReplyBeginVC;
-    vcEnd = gWriteReplyEndVC;
-  }
-  assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
-
-  int out_port;
-
-  if(inject) {
-
-    out_port = -1;
-
-  } else if(r->GetID() == f->dest) {
-
-    // at destination router, we don't need to separate VCs by dim order
-    out_port = 2*gN;
-
-  } else {
-
-    //each class must have at least 2 vcs assigned or else xy_yx will deadlock
-    int const available_vcs = (vcEnd - vcBegin + 1) / 2;
-    assert(available_vcs > 0);
-    
-    int out_port_xy = dor_next_mesh( r->GetID(), f->dest, false );
-    int out_port_yx = dor_next_mesh( r->GetID(), f->dest, true );
-
-    // Route order (XY or YX) determined when packet is injected
-    //  into the network, adaptively
-    bool x_then_y;
-    if(in_channel < 2*gN){
-      x_then_y =  (f->vc < (vcBegin + available_vcs));
-    } else {
-      int credit_xy = r->GetUsedCredit(out_port_xy);
-      int credit_yx = r->GetUsedCredit(out_port_yx);
-      if(credit_xy > credit_yx) {
-	x_then_y = false;
-      } else if(credit_xy < credit_yx) {
-	x_then_y = true;
-      } else {
-	x_then_y = (RandomInt(1) > 0);
-      }
-    }
-    
-    if(x_then_y) {
-      out_port = out_port_xy;
-      vcEnd -= available_vcs;
-    } else {
-      out_port = out_port_yx;
-      vcBegin += available_vcs;
-    }
-
-  }
-
-  outputs->Clear();
-
-  outputs->AddRange( out_port , vcBegin, vcEnd );
-  
-}
 
 void adaptive_xy_yx_mesh( const Router *r, const Flit *f, 
 		 int in_channel, OutputSet *outputs, bool inject )
@@ -732,6 +663,101 @@ void set_odd_even_available(int cur, int dest, int src, int available_dimension_
         }
       }
     }
+}
+
+int factorial(int n){
+  int ret = 1;
+  for (int i = 1; i <= n; i++)
+    ret *= i;
+  return ret;
+}
+
+void set_pd_ftr_weights( const Router *r, int cur, int dest, int dim_weights[]){
+  assert(gN == 2);
+
+  int cur_x = cur % gK, cur_y = cur / gK;
+  int dest_x = dest % gK, dest_y = dest / gK;
+
+  int e_x = dest_x - cur_x;
+  int e_y = dest_y - cur_y;
+  int east = 0, west = 1, north = 2, south = 3; // Direction identifiers
+
+  dim_weights[0] = 0;
+  dim_weights[1] = 0;
+  dim_weights[2] = 0;
+  dim_weights[3] = 0;
+
+  int abs_e_x = (e_x < 0)? -e_x : e_x;
+  int abs_e_y = (e_y < 0)? -e_y : e_y;
+
+  int buf_size = g_vc_buf_size * g_num_vcs;
+  if (e_x > 0){
+    int pd = factorial(abs_e_x + abs_e_y - 1)/(factorial(abs_e_x - 1) * factorial(abs_e_y));
+    dim_weights[east] = pd * (buf_size - r->GetUsedCredit(east));
+  }
+  else if (e_x < 0){
+    int pd = factorial(abs_e_x + abs_e_y - 1)/(factorial(abs_e_x - 1) * factorial(abs_e_y));
+    dim_weights[west] = pd * (buf_size - r->GetUsedCredit(west));
+  }
+
+  if (e_y > 0){
+    int pd = factorial(abs_e_x + abs_e_y - 1)/(factorial(abs_e_x) * factorial(abs_e_y - 1));
+    dim_weights[north] = pd * (buf_size - r->GetUsedCredit(north));
+  }
+  else if (e_y < 0){
+    int pd = factorial(abs_e_x + abs_e_y - 1)/(factorial(abs_e_x) * factorial(abs_e_y - 1));
+    dim_weights[south] = pd * (buf_size - r->GetUsedCredit(south));
+  }
+}
+
+void pd_ftr_mesh( const Router *r, const Flit *f, 
+		 int in_channel, OutputSet *outputs, bool inject )
+{
+  assert(gN == 2);
+  
+  int out_port;
+  if (inject)
+    out_port = -1;
+  else {
+    int cur = r->GetID();
+    int dest = f->dest;
+
+    if ( cur == dest ) {
+      out_port = 2*gN;
+    }
+    else {
+      int dim_weights[2*gN];
+      set_pd_ftr_weights(r, cur, dest, dim_weights);
+
+      // it is possible that no nonzero weights are set if the buffers are full
+      if (!dim_weights[0] && !dim_weights[1] && !dim_weights[2] && !dim_weights[3])
+        out_port = dor_next_mesh(cur, dest);
+      else
+        out_port = choose_dim(dim_weights, true);
+    }
+  }
+
+  int vcBegin = 0, vcEnd = gNumVCs-1;
+  if ( f->type == Flit::READ_REQUEST ) {
+    vcBegin = gReadReqBeginVC;
+    vcEnd = gReadReqEndVC;
+  } else if ( f->type == Flit::WRITE_REQUEST ) {
+    vcBegin = gWriteReqBeginVC;
+    vcEnd = gWriteReqEndVC;
+  } else if ( f->type ==  Flit::READ_REPLY ) {
+    vcBegin = gReadReplyBeginVC;
+    vcEnd = gReadReplyEndVC;
+  } else if ( f->type ==  Flit::WRITE_REPLY ) {
+    vcBegin = gWriteReplyBeginVC;
+    vcEnd = gWriteReplyEndVC;
+  }
+  assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+
+
+  outputs->Clear();
+
+  outputs->AddRange( out_port , vcBegin, vcEnd );
+  
 }
 // FUNCTION FOR ODD EVEN 2D MESH ROUTING
 ////////////////////////////////////////////////////////////////////////
@@ -2466,6 +2492,8 @@ void InitializeRoutingMap( const Configuration & config )
   gNumVCs = config.GetInt( "num_vcs" );
   g_use_weighted_random = config.GetInt( "random_weighted" );
   g_use_squared_weights = config.GetInt( "squared_weights" );
+  g_vc_buf_size = config.GetInt("vc_buf_size");
+  g_num_vcs = config.GetInt("num_vcs");
 
   //
   // traffic class partitions

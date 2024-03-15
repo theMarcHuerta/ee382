@@ -34,7 +34,7 @@ k = 8;
 n = 2;
 
 // Routing
-routing_function = odd_even;
+routing_function = pd_ftr;
 random_weighted = 1;
 squared_weights = 0;
 
