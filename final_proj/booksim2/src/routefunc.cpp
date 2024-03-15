@@ -839,82 +839,6 @@ int get_ring_weight( int dim_locs[] ) {
 //=============================================================
 //=============================================================
 
-int onion_next_mesh( int cur, int dest)
-{
-  if ( cur == dest ) {
-    return 2*gN;  // Eject
-  }
-
-  // weight for each dim, set to zero if packet does not need to be routed in
-  // a certain dim
-  int dim_weights[gN];
-  int cur_loc[gN];
-  int dest_loc[gN];
-
-  for (int d = 0; d < gN; d++){
-    cur_loc[d] = cur % gK;
-    cur /= gK;
-    dest_loc[d] = dest % gK;
-    dest /= gK;
-  }
-
-  for (int d = 0; d < gN; d++){
-    if ( cur_loc[d] != dest_loc[d] ) {
-      // set weight value in dim to ring weight
-      int temp = cur_loc[d];
-      if (cur_loc[d] < dest_loc[d])
-        cur_loc[d]++;
-      else
-        cur_loc[d]--;
-      dim_weights[d] = get_ring_weight(cur_loc);
-      cur_loc[d] = temp;
-    }
-    else
-      dim_weights[d] = 0;
-  }
-
-  int dim_left = 0;
-  if (g_use_weighted_random){
-    // ramdomly choose dim based on weights in dim_weights
-    //subtract from each weight the smallest nonzero weight - 1
-    int min_nonzero = 0;
-    for (int d = 0; d < gN; d++){
-      if (dim_weights[d] != 0){
-        if (min_nonzero == 0 || dim_weights[d] < min_nonzero){
-          min_nonzero = dim_weights[d];
-        }
-      }
-    }
-    for (int d = 0; d < gN; d++){
-      if (dim_weights[d] != 0){
-        dim_weights[d] -= (min_nonzero-1);
-      }
-    }
-
-    if (g_use_squared_weights){
-      for (int d = 0; d < gN; d++){
-        dim_weights[d] = dim_weights[d]*dim_weights[d];
-      }
-    }
-    dim_left = weighted_random(dim_weights, gN);
-  }
-  else{
-    // choose dim based on max value in dim_weights
-    int max_weight = -1;
-    for (int d = 0; d < gN; d++) {
-      if (dim_weights[d] > max_weight){
-        max_weight = dim_weights[d];
-        dim_left = d;
-      }
-    }
-  }
-
-  if ( cur_loc[dim_left] < dest_loc[dim_left] ) {
-    return 2*dim_left;     // Right
-  } else {
-    return 2*dim_left + 1; // Left
-  }
-}
 
 
 //=============================================================
@@ -970,6 +894,16 @@ void set_onion_dim_weights( int cur, int dest, int dim_weights[]){
       dim_weights[d] *= dim_weights[d];
     }
   }
+}
+
+int onion_next_mesh( int cur, int dest)
+{
+  if ( cur == dest ) {
+    return 2*gN;  // Eject
+  }
+  int onion_dim_weights[2*gN];
+  set_onion_dim_weights(cur, dest, onion_dim_weights);
+  return choose_dim(onion_dim_weights);
 }
 
 int onion_peel( int cur, int dest, int available_dimension_set[])
@@ -1136,19 +1070,8 @@ void onion_mesh( const Router *r, const Flit *f, int in_channel, OutputSet *outp
   int out_port;
   if (inject)
     out_port = -1;
-  else {
-    int cur = r->GetID();
-    int dest = f->dest;
-
-    if ( cur == dest ) {
-      out_port = 2*gN;
-    }
-    else {
-      int onion_dim_weights[2*gN];
-      set_onion_dim_weights(cur, dest, onion_dim_weights);
-      out_port = choose_dim(onion_dim_weights);
-    }
-  }
+  else 
+    out_port = onion_next_mesh(r->GetID(), f->dest);
   
   int vcBegin = 0, vcEnd = gNumVCs-1;
   if ( f->type == Flit::READ_REQUEST ) {
