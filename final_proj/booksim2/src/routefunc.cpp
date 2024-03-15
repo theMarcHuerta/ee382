@@ -1580,7 +1580,9 @@ void onion_escape_mesh( const Router *r, const Flit *f, int in_channel, OutputSe
   
   if ( in_vc != vcBegin ) { // If not in the escape VC
     // onion for all other channels
-    int out_port = onion_next_mesh( r->GetID( ), f->dest);
+    int onion_dim_weights[2*gN];
+    set_onion_dim_weights(r->GetID( ), f->dest, onion_dim_weights);
+    out_port = choose_dim(onion_dim_weights);
     if ( f->watch ) {
       *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
       << "Adding VC range [" 
@@ -2559,6 +2561,7 @@ void InitializeRoutingMap( const Configuration & config )
   gRoutingFunctionMap["romm_ni_mesh"]    = &romm_ni_mesh;
 
   gRoutingFunctionMap["min_adapt_mesh"]   = &min_adapt_mesh;
+  gRoutingFunctionMap["onion_escape_mesh"]   = &onion_escape_mesh;
   gRoutingFunctionMap["min_adapt_torus"]  = &min_adapt_torus;
 
   gRoutingFunctionMap["planar_adapt_mesh"] = &planar_adapt_mesh;
